@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-rr-navy-deep text-white font-sans antialiased;
+    min-height: 100vh;
+    background-color: #080D1B;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: #080D1B; }
+  ::-webkit-scrollbar-thumb { background: #1A2540; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #E91E63; }
+  ::selection { background: #E91E63; color: #fff; }
+}
+
+/* ── Design Tokens / Component Classes ─────────────────────── */
+@layer components {
+
+  /* Cards */
+  .rr-card {
+    @apply bg-rr-navy-card border border-rr-border rounded-xl transition-all duration-200;
+  }
+  .rr-card-hover:hover {
+    @apply border-white/[0.12] shadow-card-hover;
+  }
+
+  /* Buttons */
+  .rr-btn-primary {
+    @apply bg-rr-pink hover:bg-rr-pink-bright text-white font-semibold
+           px-5 py-2.5 rounded-lg transition-all duration-200
+           flex items-center gap-2 text-sm shadow-rr-pink-sm;
+  }
+  .rr-btn-secondary {
+    @apply bg-transparent hover:bg-white/[0.06] border border-white/20
+           hover:border-white/30 text-white font-medium px-5 py-2.5
+           rounded-lg transition-all duration-200 flex items-center gap-2 text-sm;
+  }
+
+  /* Badges */
+  .rr-badge         { @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold; }
+  .rr-badge-pink    { @apply rr-badge bg-rr-pink/15 text-rr-pink border border-rr-pink/25; }
+  .rr-badge-gold    { @apply rr-badge bg-rr-gold/15 text-rr-gold border border-rr-gold/25; }
+  .rr-badge-muted   { @apply rr-badge bg-white/5 text-rr-muted border border-white/10; }
+  .rr-badge-warning { @apply rr-badge bg-amber-500/15 text-amber-400 border border-amber-500/25; }
+  .rr-badge-pending { @apply rr-badge bg-rr-navy-light text-rr-muted-dim border border-white/10 text-[10px] tracking-wide uppercase; }
+
+  /* Typography */
+  .rr-label    { @apply text-[10px] font-bold uppercase tracking-widest text-rr-muted-dim; }
+  .rr-divider  { @apply border-t border-rr-border; }
+
+  /* Sidebar nav items */
+  .rr-nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           text-rr-muted hover:text-white hover:bg-white/[0.05]
+           transition-all duration-150 cursor-pointer w-full;
+  }
+  .rr-nav-item.active {
+    @apply text-white bg-rr-pink font-semibold;
+    box-shadow: 0 0 16px rgba(233,30,99,0.30);
+  }
+  .rr-nav-item.active svg { @apply text-white; }
+
+  /* Status dots */
+  .s-dot        { @apply inline-block w-2 h-2 rounded-full flex-shrink-0; }
+  .s-dot-pulse  { @apply s-dot bg-amber-400; animation: pulseDot 2s cubic-bezier(.4,0,.6,1) infinite; }
+  .s-dot-green  { @apply s-dot bg-emerald-400; }
+  .s-dot-muted  { @apply s-dot bg-rr-muted-dim; }
+  .s-dot-pink   { @apply s-dot bg-rr-pink; }
+
+  /* Legacy aliases (used by existing pages) */
+  .status-dot         { @apply inline-block w-2 h-2 rounded-full flex-shrink-0; }
+  .status-dot.pulsing { @apply bg-amber-400; animation: pulseDot 2s cubic-bezier(.4,0,.6,1) infinite; }
+  .status-dot.pending { @apply bg-amber-400; }
+  .status-dot.ready   { @apply bg-emerald-400; }
+  .status-dot.inactive{ @apply bg-rr-muted-dim; }
+
+  /* Pipeline node */
+  .pipe-node {
+    @apply w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all;
+  }
+  .pipe-node-active {
+    @apply pipe-node bg-rr-pink/15 border-rr-pink;
+    box-shadow: 0 0 18px rgba(233,30,99,0.30);
+  }
+  .pipe-node-inactive {
+    @apply pipe-node bg-rr-navy-light border-white/10;
+  }
+  .pipe-line {
+    @apply flex-1 h-px bg-rr-border;
+  }
+  .pipe-line-dashed {
+    flex: 1;
+    height: 1px;
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 4px, transparent 4px, transparent 10px);
+  }
+}
+
+@keyframes pulseDot {
+  0%,100% { opacity:1; }
+  50%      { opacity:0.3; }
+}
+
+/* ── Special Surfaces ───────────────────────────────────────── */
+
+/* Gradient border card (pink-to-purple) */
+.gb-card {
+  position: relative;
+  background: #111A30;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.gb-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(233,30,99,0.5) 0%,
+    rgba(36,19,56,0.4) 50%,
+    rgba(233,30,99,0.15) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Stadium / hero image right panel CSS art */
+.hero-visual {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1a0a24 0%, #0f0820 50%, #110818 100%);
+}
+
+/* Palace silhouette SVG background used in sidebar footer */
+.palace-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 160'%3E%3Cg fill='%23E91E63' opacity='0.12'%3E%3Crect x='140' y='110' width='40' height='50'/%3E%3Crect x='100' y='120' width='30' height='40'/%3E%3Crect x='190' y='120' width='30' height='40'/%3E%3Crect x='60' y='130' width='25' height='30'/%3E%3Crect x='235' y='130' width='25' height='30'/%3E%3Cpath d='M140 110 L160 90 L180 110 Z'/%3E%3Cpath d='M100 120 L115 105 L130 120 Z'/%3E%3Cpath d='M190 120 L205 105 L220 120 Z'/%3E%3Cpath d='M60 130 L72 118 L85 130 Z'/%3E%3Cpath d='M235 130 L248 118 L260 130 Z'/%3E%3Ccircle cx='160' cy='88' r='5'/%3E%3Ccircle cx='115' cy='103' r='4'/%3E%3Ccircle cx='205' cy='103' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+}
+
+/* Cricket ball seam pattern for hero */
+.hero-seam-bg {
+  background-image:
+    radial-gradient(ellipse 60% 40% at 70% 50%, rgba(233,30,99,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 90% 20%, rgba(36,19,56,0.8) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 100%, rgba(8,13,27,0.9) 0%, transparent 100%);
+}
+
+/* Stadium arch SVG decorative */
+.stadium-arch {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 300'%3E%3Cg stroke='%23E91E63' stroke-width='1' fill='none' opacity='0.08'%3E%3Cellipse cx='300' cy='300' rx='280' ry='200'/%3E%3Cellipse cx='300' cy='300' rx='220' ry='160'/%3E%3Cellipse cx='300' cy='300' rx='160' ry='120'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: bottom;
+}
+
+/* Shimmer skeleton */
+.skeleton {
+  @apply bg-rr-navy-light rounded;
+  background: linear-gradient(90deg, #1A2540 25%, #1E2D4A 50%, #1A2540 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
