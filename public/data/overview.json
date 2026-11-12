@@ -1,0 +1,51 @@
+{
+  "status": "ready",
+  "generated_at": "2026-11-12 20:13:03",
+  "total_matches": 867,
+  "total_deliveries": 200999,
+  "batting_pressure_deliveries": 85532,
+  "batting_pressure_pct": 42.55,
+  "bowling_pressure_deliveries": 51138,
+  "bowling_pressure_pct": 25.44,
+  "unique_batters": 888,
+  "eligible_batters": 255,
+  "unique_bowlers": 647,
+  "eligible_bowlers": 172,
+  "league_overall_strike_rate": 139.46,
+  "league_pressure_strike_rate": 144.4,
+  "league_strike_rate_delta": 4.94,
+  "league_overall_economy": 8.66,
+  "league_pressure_economy": 9.76,
+  "league_economy_delta": 1.1,
+  "phase1_tests": {
+    "total": 10,
+    "passed": 10
+  },
+  "phase2_tests": {
+    "total": 12,
+    "passed": 12
+  },
+  "pressure_categories": {
+    "batting": {
+      "Normal": 115467,
+      "Chasing High RRR": 38839,
+      "Death Overs Acceleration": 23669,
+      "Chasing Escalating RRR": 9590,
+      "Middle Collapse Recovery": 6714,
+      "Powerplay Collapse": 2093,
+      "Final Overs Climax": 1693,
+      "Death Chase Crunch": 1623,
+      "Chasing Wicket Crisis": 1273,
+      "Super Over Climax": 38
+    },
+    "bowling": {
+      "Normal": 149861,
+      "Death Overs Execution": 21613,
+      "Middle Overs Containment": 11192,
+      "Death Overs Defense": 9739,
+      "Powerplay Assault Control": 7183,
+      "Final Overs Climax": 1373,
+      "Super Over Climax": 38
+    }
+  }
+}

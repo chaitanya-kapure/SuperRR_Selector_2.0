@@ -1,0 +1,104 @@
+[
+  {
+    "category": "Normal",
+    "delivery_count": 115467,
+    "pct_of_total": 57.45,
+    "role": "Batting"
+  },
+  {
+    "category": "Chasing High RRR",
+    "delivery_count": 38839,
+    "pct_of_total": 19.32,
+    "role": "Batting"
+  },
+  {
+    "category": "Death Overs Acceleration",
+    "delivery_count": 23669,
+    "pct_of_total": 11.78,
+    "role": "Batting"
+  },
+  {
+    "category": "Chasing Escalating RRR",
+    "delivery_count": 9590,
+    "pct_of_total": 4.77,
+    "role": "Batting"
+  },
+  {
+    "category": "Middle Collapse Recovery",
+    "delivery_count": 6714,
+    "pct_of_total": 3.34,
+    "role": "Batting"
+  },
+  {
+    "category": "Powerplay Collapse",
+    "delivery_count": 2093,
+    "pct_of_total": 1.04,
+    "role": "Batting"
+  },
+  {
+    "category": "Final Overs Climax",
+    "delivery_count": 1693,
+    "pct_of_total": 0.84,
+    "role": "Batting"
+  },
+  {
+    "category": "Death Chase Crunch",
+    "delivery_count": 1623,
+    "pct_of_total": 0.81,
+    "role": "Batting"
+  },
+  {
+    "category": "Chasing Wicket Crisis",
+    "delivery_count": 1273,
+    "pct_of_total": 0.63,
+    "role": "Batting"
+  },
+  {
+    "category": "Super Over Climax",
+    "delivery_count": 38,
+    "pct_of_total": 0.02,
+    "role": "Batting"
+  },
+  {
+    "category": "Normal",
+    "delivery_count": 149861,
+    "pct_of_total": 74.56,
+    "role": "Bowling"
+  },
+  {
+    "category": "Death Overs Execution",
+    "delivery_count": 21613,
+    "pct_of_total": 10.75,
+    "role": "Bowling"
+  },
+  {
+    "category": "Middle Overs Containment",
+    "delivery_count": 11192,
+    "pct_of_total": 5.57,
+    "role": "Bowling"
+  },
+  {
+    "category": "Death Overs Defense",
+    "delivery_count": 9739,
+    "pct_of_total": 4.85,
+    "role": "Bowling"
+  },
+  {
+    "category": "Powerplay Assault Control",
+    "delivery_count": 7183,
+    "pct_of_total": 3.57,
+    "role": "Bowling"
+  },
+  {
+    "category": "Final Overs Climax",
+    "delivery_count": 1373,
+    "pct_of_total": 0.68,
+    "role": "Bowling"
+  },
+  {
+    "category": "Super Over Climax",
+    "delivery_count": 38,
+    "pct_of_total": 0.02,
+    "role": "Bowling"
+  }
+]

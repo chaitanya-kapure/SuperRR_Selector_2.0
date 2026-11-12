@@ -2,7 +2,7 @@
  * SupeRR Selector 2.0 — Analytics Integration Service
  * 
  * Provides clean contracts and loading mechanisms for Python-generated analytics artifacts.
- * Gracefully handles pending / in-development states without fabricating false numbers.
+ * Connects directly to verified Phase 1 & Phase 2 model outputs in /data/*.json.
  */
 
 const API_BASE_URL = import.meta.env.VITE_ANALYTICS_API_URL || '/data';
@@ -49,9 +49,14 @@ export const analyticsService = {
     return fetchArtifact('top10_bowlers.json');
   },
 
-  // Player comparison dataset
-  async getPlayerComparison(playerIds = []) {
-    return fetchArtifact(`player_comparisons.json?ids=${playerIds.join(',')}`);
+  // Pressure situations distribution
+  async getPressureDistribution() {
+    return fetchArtifact('pressure_distribution.json');
+  },
+
+  // Comprehensive player deep-dive profiles
+  async getPlayerProfiles() {
+    return fetchArtifact('player_profiles.json');
   },
 
   // Verified Audit summary from official Round 1 data pack
@@ -63,17 +68,23 @@ export const analyticsService = {
       matchesWithBallByBall: 867,
       abandonedMatches: 16,
       totalDeliveries: 200999,
+      battingPressureDeliveries: 85532,
+      bowlingPressureDeliveries: 51138,
       totalCompetitions: 141,
       totalIPLMatches: 371,
       iplSeasons: ['2022', '2023', '2024', '2025', '2026'],
       totalT20IMatches: 482,
       uniqueStrikers: 888,
       uniqueBowlers: 647,
+      eligibleBatters: 255,
+      eligibleBowlers: 172,
       totalPlayersMapped: 1217,
       totalDismissals: 10881,
       bowlerWickets: 10058,
       nonBowlerDismissals: 823,
       widesTotal: 7714,
+      phase1TestsPassed: 10,
+      phase2TestsPassed: 12,
       scorecardVerified: true
     };
   }

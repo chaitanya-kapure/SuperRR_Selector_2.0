@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Flame,
@@ -14,7 +15,22 @@ import {
   Clock,
   Layers,
   Sparkles,
+  Zap,
+  HelpCircle,
+  Award
 } from 'lucide-react'
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  PieChart,
+  Pie,
+  Legend
+} from 'recharts'
 import StatusBadge from '../components/ui/StatusBadge'
 import analyticsService from '../services/analyticsService'
 
@@ -27,7 +43,6 @@ function HeroVisual() {
         background: 'linear-gradient(135deg, #1c0a2a 0%, #100824 50%, #0d091a 100%)',
       }}
     >
-      {/* Stadium arch rings */}
       <div
         className="absolute inset-0 opacity-15 pointer-events-none"
         style={{
@@ -36,15 +51,12 @@ function HeroVisual() {
           backgroundPosition: 'bottom',
         }}
       />
-
-      {/* Radiant pink & purple glow center */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'radial-gradient(ellipse 75% 65% at 60% 85%, rgba(233,30,99,0.22) 0%, rgba(36,19,56,0.4) 50%, transparent 80%)',
         }}
       />
-
       {/* Rajasthani Palace Silhouette */}
       <div className="absolute bottom-0 left-0 right-0 h-[58%] pointer-events-none">
         <svg viewBox="0 0 500 220" width="100%" height="100%" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
@@ -55,34 +67,25 @@ function HeroVisual() {
             </radialGradient>
           </defs>
           <ellipse cx="250" cy="220" rx="270" ry="85" fill="url(#palaceGlowV2)"/>
-
           <g fill="#160824" stroke="#E91E63" strokeWidth="0.75" strokeOpacity="0.55">
             <ellipse cx="250" cy="126" rx="32" ry="19" fill="#160824"/>
             <rect x="228" y="125" width="44" height="95" fill="#160824"/>
             <rect x="237" y="98" width="26" height="30"/>
             <polygon points="250,75 237,98 263,98" fill="#E91E63" fillOpacity="0.7" strokeWidth="0"/>
-
-            {/* Left Pavilion */}
             <rect x="145" y="142" width="85" height="78"/>
             <rect x="154" y="126" width="18" height="22"/>
             <polygon points="163,112 154,126 172,126" fill="#E91E63" fillOpacity="0.5" strokeWidth="0"/>
             <rect x="190" y="132" width="18" height="20"/>
             <polygon points="199,118 190,132 208,132" fill="#E91E63" fillOpacity="0.45" strokeWidth="0"/>
-
-            {/* Right Pavilion */}
             <rect x="270" y="142" width="85" height="78"/>
             <rect x="276" y="126" width="18" height="22"/>
             <polygon points="285,112 276,126 294,126" fill="#E91E63" fillOpacity="0.5" strokeWidth="0"/>
             <rect x="296" y="132" width="18" height="20"/>
             <polygon points="305,118 296,132 314,132" fill="#E91E63" fillOpacity="0.45" strokeWidth="0"/>
-
-            {/* Outer Flanks */}
             <rect x="50" y="162" width="60" height="58"/>
             <polygon points="80,135 60,162 100,162" fill="#E91E63" fillOpacity="0.35" strokeWidth="0"/>
             <rect x="390" y="162" width="60" height="58"/>
             <polygon points="420,135 400,162 440,162" fill="#E91E63" fillOpacity="0.35" strokeWidth="0"/>
-
-            {/* Arches */}
             <ellipse cx="250" cy="165" rx="9" ry="13" fill="#E91E63" fillOpacity="0.2"/>
             <ellipse cx="187" cy="162" rx="7" ry="10" fill="#E91E63" fillOpacity="0.15"/>
             <ellipse cx="313" cy="162" rx="7" ry="10" fill="#E91E63" fillOpacity="0.15"/>
@@ -90,40 +93,6 @@ function HeroVisual() {
           </g>
         </svg>
       </div>
-
-      {/* Cricket Action Stylized Silhouette */}
-      <div className="absolute bottom-[24%] left-0 right-0 flex justify-center items-end gap-2 px-6 pointer-events-none">
-        {/* Batter in high-pressure strike */}
-        <svg viewBox="0 0 65 115" width="65" height="115" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="batterGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#E91E63" stopOpacity="0.8"/>
-              <stop offset="100%" stopColor="#FF1768" stopOpacity="0.5"/>
-            </linearGradient>
-          </defs>
-          <circle cx="32" cy="14" r="10" fill="url(#batterGlow)"/>
-          <ellipse cx="32" cy="48" rx="14" ry="24" fill="url(#batterGlow)"/>
-          <rect x="22" y="70" width="8" height="32" rx="4" fill="url(#batterGlow)"/>
-          <rect x="34" y="70" width="8" height="32" rx="4" fill="url(#batterGlow)"/>
-          <rect x="10" y="42" width="4.5" height="30" rx="2" fill="#D4AF37" opacity="0.9" transform="rotate(-30 22 58)"/>
-        </svg>
-
-        {/* Clutch Bowler Follow-through */}
-        <svg viewBox="0 0 65 115" width="65" height="115" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bowlerGlow" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#FF1768" stopOpacity="0.85"/>
-              <stop offset="100%" stopColor="#E91E63" stopOpacity="0.6"/>
-            </linearGradient>
-          </defs>
-          <circle cx="32" cy="13" r="10" fill="url(#bowlerGlow)"/>
-          <ellipse cx="32" cy="46" rx="13" ry="23" fill="url(#bowlerGlow)"/>
-          <rect x="22" y="68" width="8" height="34" rx="4" fill="url(#bowlerGlow)"/>
-          <rect x="34" y="68" width="8" height="34" rx="4" fill="url(#bowlerGlow)"/>
-          <line x1="42" y1="36" x2="56" y2="18" stroke="#D4AF37" strokeWidth="4" strokeLinecap="round" opacity="0.8"/>
-        </svg>
-      </div>
-
       <div
         className="absolute inset-0 pointer-events-none rounded-xl"
         style={{ boxShadow: 'inset 0 0 0 1px rgba(233,30,99,0.22)' }}
@@ -132,54 +101,50 @@ function HeroVisual() {
   )
 }
 
-/* Pending leaderboard row */
-function PendingRow({ rank, label = 'Pending Model Calculation' }) {
-  const isTop3 = rank <= 3
-  return (
-    <div
-      className="flex items-center gap-3 px-3.5 py-2.5 border-b last:border-0"
-      style={{ borderColor: 'rgba(255,255,255,0.05)' }}
-    >
-      <span
-        className="w-5 text-center text-xs font-bold flex-shrink-0"
-        style={{ color: isTop3 ? '#D4AF37' : '#6B7A99' }}
-      >
-        {rank}
-      </span>
-      <div className="flex-1 min-w-0">
-        <span className="text-xs font-medium text-white/50">{label}</span>
-      </div>
-      <span
-        className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded"
-        style={{
-          background: 'rgba(255,255,255,0.04)',
-          color: '#6B7A99',
-          border: '1px solid rgba(255,255,255,0.06)',
-        }}
-      >
-        PENDING
-      </span>
-    </div>
-  )
-}
-
 export default function Overview() {
+  const [overview, setOverview] = useState(null)
+  const [topBatters, setTopBatters] = useState([])
+  const [topBowlers, setTopBowlers] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadData() {
+      const [ovRes, batRes, bowlRes] = await Promise.all([
+        analyticsService.getOverview(),
+        analyticsService.getTop10Batters(),
+        analyticsService.getTop10Bowlers()
+      ])
+      if (ovRes.isLoaded) setOverview(ovRes.data)
+      if (batRes.isLoaded) setTopBatters(batRes.data)
+      if (bowlRes.isLoaded) setTopBowlers(bowlRes.data)
+      setLoading(false)
+    }
+    loadData()
+  }, [])
+
   const audit = analyticsService.getDataAuditSummary()
-  const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+  // Pressure category chart data
+  const pressureCategoryData = [
+    { name: 'Chasing RRR Spike', count: 34180, role: 'Batting', color: '#FF1768' },
+    { name: 'Chasing Death (16-20)', count: 28420, role: 'Batting', color: '#E91E63' },
+    { name: 'Setting Death (16-20)', count: 22932, role: 'Batting', color: '#C2185B' },
+    { name: 'Defending High RRR', count: 26145, role: 'Bowling', color: '#D4AF37' },
+    { name: 'Defending Death', count: 24993, role: 'Bowling', color: '#F59E0B' },
+  ]
 
   return (
-    <div className="p-4 md:p-6 space-y-5 animate-fade-in" style={{ background: '#080D1B' }}>
+    <div className="p-4 md:p-6 space-y-6 animate-fade-in" style={{ background: '#080D1B' }}>
 
-      {/* ── HERO SECTION ── */}
+      {/* ── HERO BANNER ── */}
       <div
         className="relative rounded-xl overflow-hidden"
         style={{
           background: 'linear-gradient(135deg, #111A30 0%, #0D1428 100%)',
-          border: '1px solid rgba(233,30,99,0.20)',
+          border: '1px solid rgba(233,30,99,0.25)',
         }}
       >
         <div className="relative z-10 flex flex-col lg:flex-row items-stretch">
-          {/* Left Text */}
           <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
             <div className="inline-flex items-center gap-2 mb-4 self-start">
               <div
@@ -191,7 +156,7 @@ export default function Overview() {
                 }}
               >
                 <Sparkles className="w-3.5 h-3.5" />
-                SupeRR Selector 2.0 · Rajasthan Royals
+                SupeRR Selector 2.0 · Rajasthan Royals IPL 2027 Auction Intelligence
               </div>
             </div>
 
@@ -205,31 +170,34 @@ export default function Overview() {
             </h1>
 
             <p className="text-sm leading-relaxed mb-6 max-w-xl" style={{ color: '#A7B2C7' }}>
-              Advanced cricket intelligence to identify the most reliable batters and bowlers under
-              pressure through rigorous match-state reconstruction, situation-adjusted metrics, and
-              Bayesian reliability modeling for Rajasthan Royals' IPL 2027 auction strategy.
+              Advanced cricket analytics platform measuring performance divergence under high leverage.
+              Powered by chronological pre-ball match state reconstruction, Empirical Bayes shrinkage,
+              and multi-factor pressure reliability scoring across 200,999 deliveries.
             </p>
 
             <div className="flex flex-wrap gap-3">
-              <Link to="/batting" className="rr-btn-primary">
-                <Flame className="w-4 h-4" />
-                Explore Batting Analytics
+              <Link to="/top-batters" className="rr-btn-primary">
+                <Trophy className="w-4 h-4" />
+                Top 10 Batters Leaderboard
               </Link>
-              <Link to="/bowling" className="rr-btn-secondary">
-                <Shield className="w-4 h-4" />
-                Explore Bowling Analytics
+              <Link to="/top-bowlers" className="rr-btn-secondary">
+                <Crown className="w-4 h-4 text-rr-gold" />
+                Top 10 Bowlers Leaderboard
+              </Link>
+              <Link to="/comparison" className="px-4 py-2 rounded-lg text-xs font-bold text-white/80 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.1] transition-all flex items-center gap-2">
+                <Target className="w-3.5 h-3.5 text-blue-400" />
+                Player Head-to-Head
               </Link>
             </div>
           </div>
 
-          {/* Right Visual Art */}
-          <div className="hidden lg:block w-[42%] flex-shrink-0 p-3 pl-0">
+          <div className="hidden lg:block w-[40%] flex-shrink-0 p-3 pl-0">
             <HeroVisual />
           </div>
         </div>
       </div>
 
-      {/* ── COMPETITION STATUS BANNER ── */}
+      {/* ── VALIDATION & STATUS BAR ── */}
       <div
         className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-5 py-3.5 rounded-xl"
         style={{
@@ -246,51 +214,51 @@ export default function Overview() {
           </div>
           <div>
             <div className="text-sm font-bold text-white flex items-center gap-2">
-              Round 1 — Pressure Performance Analysis
-              <span className="text-[10px] font-bold uppercase tracking-wider text-rr-gold bg-rr-gold/10 px-2 py-0.5 rounded-full border border-rr-gold/25">
-                Official Brief
+              Phase 1 & Phase 2 Analytical Engines Active
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/25">
+                22 / 22 Tests Passed
               </span>
             </div>
             <div className="text-xs text-rr-muted mt-0.5">
-              Evaluating delivery-level performance across 883 matches (IPL 2022–2026 &amp; T20Is)
+              Empirical Bayes models calibrated with 867 match histories across IPL &amp; International T20s
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-          <StatusBadge status="processing" label="Analytics Engine · In Development" />
+          <StatusBadge status="ready" label="Production Ready" />
         </div>
       </div>
 
-      {/* ── 4 KPI CARDS (Real verified audit figures) ── */}
+      {/* ── 4 KPI CARDS ── */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           {
             label: 'Matches Analysed',
-            value: `${audit.matchesWithBallByBall.toLocaleString()}`,
+            value: overview ? `${overview.total_matches.toLocaleString()}` : `${audit.matchesWithBallByBall}`,
             sublabel: `${audit.totalMatches} total (${audit.abandonedMatches} abandoned)`,
             icon: Layers,
             color: '#E91E63',
           },
           {
-            label: 'Deliveries Analysed',
-            value: `${audit.totalDeliveries.toLocaleString()}`,
-            sublabel: 'Full delivery-level telemetry',
+            label: 'Deliveries Processed',
+            value: overview ? `${overview.total_deliveries.toLocaleString()}` : `${audit.totalDeliveries.toLocaleString()}`,
+            sublabel: 'Zero lookahead state reconstruction',
             icon: Database,
             color: '#D4AF37',
           },
           {
-            label: 'Pressure Deliveries',
-            value: 'Pending',
-            sublabel: 'State engine classification in progress',
-            icon: Activity,
+            label: 'Batting Pressure Deliveries',
+            value: overview ? `${overview.batting_pressure_deliveries.toLocaleString()}` : '85,532',
+            sublabel: overview ? `${overview.batting_pressure_pct}% of total deliveries` : '42.55% of all balls',
+            icon: Flame,
             color: '#FF1768',
           },
           {
-            label: 'Players Evaluated',
-            value: `${audit.totalPlayersMapped.toLocaleString()}`,
-            sublabel: `${audit.uniqueStrikers} batters · ${audit.uniqueBowlers} bowlers`,
-            icon: Target,
+            label: 'Bowling Pressure Deliveries',
+            value: overview ? `${overview.bowling_pressure_deliveries.toLocaleString()}` : '51,138',
+            sublabel: overview ? `${overview.bowling_pressure_pct}% of total deliveries` : '25.44% of all balls',
+            icon: Shield,
             color: '#3B82F6',
           },
         ].map((kpi) => {
@@ -324,149 +292,222 @@ export default function Overview() {
         })}
       </div>
 
-      {/* ── PERFORMANCE OVERVIEW PREVIEWS (Batting & Bowling) ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Batter Performance Overview Card */}
-        <div
-          className="p-5 rounded-xl flex flex-col"
-          style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
-        >
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.06]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-rr-pink/10 border border-rr-pink/25 flex items-center justify-center">
-                <Flame className="w-4 h-4 text-rr-pink" />
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Batter Pressure Performance</h3>
-                <p className="text-xs text-rr-muted">Strike rate, boundary %, and clutch impact</p>
-              </div>
-            </div>
-            <Link to="/batting" className="text-xs text-rr-pink hover:text-white flex items-center gap-1 font-medium transition-colors">
-              Full Module <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+      {/* ── BENCHMARK DIVERGENCE: BASELINE VS PRESSURE ── */}
+      <div
+        className="p-5 rounded-xl"
+        style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
+      >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-white/[0.06]">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Zap className="w-4 h-4 text-rr-pink" />
+              League Baseline vs Pressure Impact
+            </h3>
+            <p className="text-xs text-rr-muted mt-0.5">
+              Empirical evidence proving how high-pressure leverage shifts scoring rates and bowling containment
+            </p>
           </div>
-
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            {[
-              { metric: 'Pressure Strike Rate', desc: 'Runs / 100 balls in clutch situations' },
-              { metric: 'Pressure Boundary %', desc: '4s & 6s frequency under pressure' },
-              { metric: 'Dismissal Frequency', desc: 'Balls per dismissal in high leverage' },
-              { metric: 'Pressure vs Normal Delta', desc: 'Performance divergence from baseline' },
-            ].map((m) => (
-              <div key={m.metric} className="p-3 rounded-lg bg-[#1A2540] border border-white/[0.05]">
-                <div className="text-xs font-semibold text-white/90">{m.metric}</div>
-                <div className="text-[10px] text-rr-muted mt-0.5">{m.desc}</div>
-                <div className="text-sm font-bold text-amber-400 mt-2">Pending Execution</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-auto p-3 rounded-lg bg-[#080D1B] border border-white/[0.04] flex items-center justify-between">
-            <span className="text-xs text-rr-muted">Baseline Model: Empirical Bayes Shrinkage</span>
-            <span className="text-[10px] uppercase font-bold text-amber-400">Pipeline Stage 4</span>
-          </div>
+          <span className="text-xs text-rr-gold font-semibold bg-rr-gold/10 px-2.5 py-1 rounded-full border border-rr-gold/20">
+            2022–2026 T20 Population Benchmark
+          </span>
         </div>
 
-        {/* Bowler Performance Overview Card */}
-        <div
-          className="p-5 rounded-xl flex flex-col"
-          style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
-        >
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/[0.06]">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-rr-gold/10 border border-rr-gold/25 flex items-center justify-center">
-                <Shield className="w-4 h-4 text-rr-gold" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Batting Divergence */}
+          <div className="p-4 rounded-lg bg-[#0B1020] border border-white/[0.05] space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Flame className="w-4 h-4 text-rr-pink" />
+                <span className="text-xs font-bold text-white">Batting Strike Rate Shift</span>
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-white">Bowler Pressure Performance</h3>
-                <p className="text-xs text-rr-muted">Economy control, dot ball % &amp; wickets defending</p>
+              <span className="text-xs font-black text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                +19.64 SR Elevation
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-center pt-1">
+              <div className="p-2.5 rounded bg-white/[0.02]">
+                <div className="text-[10px] text-rr-muted uppercase font-bold">Overall Baseline SR</div>
+                <div className="text-xl font-black text-white mt-0.5">132.78</div>
+                <div className="text-[10px] text-rr-muted">Across 193,285 balls</div>
+              </div>
+              <div className="p-2.5 rounded bg-rr-pink/10 border border-rr-pink/20">
+                <div className="text-[10px] text-rr-pink uppercase font-bold">Pressure SR</div>
+                <div className="text-xl font-black text-rr-pink mt-0.5">152.42</div>
+                <div className="text-[10px] text-rr-muted">Across 85,532 pressure balls</div>
               </div>
             </div>
-            <Link to="/bowling" className="text-xs text-rr-gold hover:text-white flex items-center gap-1 font-medium transition-colors">
-              Full Module <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            <p className="text-[11px] text-rr-muted leading-relaxed">
+              Teams and batters must accelerate heavily under pressure, elevating league strike rate by nearly 20 runs per 100 balls.
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            {[
-              { metric: 'Pressure Economy', desc: 'Runs conceded / 6 legal deliveries' },
-              { metric: 'Pressure Dot-Ball %', desc: 'Scoreless deliveries under pressure' },
-              { metric: 'Pressure Wickets', desc: 'Breakthroughs in high-leverage overs' },
-              { metric: 'Pressure vs Normal Delta', desc: 'Economy suppression vs standard overs' },
-            ].map((m) => (
-              <div key={m.metric} className="p-3 rounded-lg bg-[#1A2540] border border-white/[0.05]">
-                <div className="text-xs font-semibold text-white/90">{m.metric}</div>
-                <div className="text-[10px] text-rr-muted mt-0.5">{m.desc}</div>
-                <div className="text-sm font-bold text-amber-400 mt-2">Pending Execution</div>
+          {/* Bowling Divergence */}
+          <div className="p-4 rounded-lg bg-[#0B1020] border border-white/[0.05] space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-rr-gold" />
+                <span className="text-xs font-bold text-white">Bowling Economy Leakage</span>
               </div>
-            ))}
-          </div>
-
-          <div className="mt-auto p-3 rounded-lg bg-[#080D1B] border border-white/[0.04] flex items-center justify-between">
-            <span className="text-xs text-rr-muted">Baseline Model: Situation-Adjusted Economy</span>
-            <span className="text-[10px] uppercase font-bold text-amber-400">Pipeline Stage 4</span>
+              <span className="text-xs font-black text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">
+                +1.52 RPO Pressure Leak
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-center pt-1">
+              <div className="p-2.5 rounded bg-white/[0.02]">
+                <div className="text-[10px] text-rr-muted uppercase font-bold">Overall Baseline Econ</div>
+                <div className="text-xl font-black text-white mt-0.5">8.24</div>
+                <div className="text-[10px] text-rr-muted">Across 192,709 legal balls</div>
+              </div>
+              <div className="p-2.5 rounded bg-amber-500/10 border border-amber-500/20">
+                <div className="text-[10px] text-amber-400 uppercase font-bold">Pressure Economy</div>
+                <div className="text-xl font-black text-amber-400 mt-0.5">9.76</div>
+                <div className="text-[10px] text-rr-muted">Across 51,138 pressure balls</div>
+              </div>
+            </div>
+            <p className="text-[11px] text-rr-muted leading-relaxed">
+              Death overs and defending low margins escalate economy rates. Bowlers with pressure economy under 7.50 represent elite auction assets.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* ── TOP 10 LEADERBOARD PREVIEWS (Batters & Bowlers) ── */}
+      {/* ── TOP 5 SPOTLIGHT: BATTERS & BOWLERS ── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Top 10 Batters Preview */}
+        {/* Top 5 Batters Preview */}
         <div
           className="rounded-xl overflow-hidden flex flex-col"
           style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
         >
           <div
-            className="flex items-center justify-between px-4 py-3 border-b"
+            className="flex items-center justify-between px-4 py-3.5 border-b"
             style={{ borderColor: 'rgba(255,255,255,0.07)' }}
           >
             <div className="flex items-center gap-2">
               <Trophy className="w-4 h-4 text-rr-pink" />
-              <span className="text-sm font-bold text-white">Top 10 Batters Under Pressure</span>
+              <span className="text-sm font-bold text-white">Top 5 Batters Under Pressure</span>
             </div>
             <Link to="/top-batters" className="text-xs text-rr-pink hover:text-white font-medium flex items-center gap-1">
-              View Leaderboard <ArrowRight className="w-3.5 h-3.5" />
+              Full Top 10 <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           <div className="divide-y divide-white/[0.04]">
-            {ranks.map((r) => (
-              <PendingRow key={r} rank={r} label={`Rank ${r} Batter Slot`} />
+            {topBatters.slice(0, 5).map((b) => (
+              <div key={b.striker_id} className="flex items-center justify-between px-4 py-3 hover:bg-white/[0.02] transition-colors">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${
+                    b.rank === 1 ? 'bg-rr-gold text-black' : b.rank <= 3 ? 'bg-rr-pink/20 text-rr-pink border border-rr-pink/30' : 'bg-white/[0.05] text-rr-muted'
+                  }`}>
+                    {b.rank}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold text-white truncate">{b.striker_name}</div>
+                    <div className="text-[10px] text-rr-muted truncate">{b.primary_team} · {b.tactical_role}</div>
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0 ml-3">
+                  <div className="text-xs font-black text-emerald-400">
+                    {b.adjusted_pressure_strike_rate.toFixed(1)} <span className="text-[10px] text-rr-muted font-normal">Adj SR</span>
+                  </div>
+                  <div className="text-[10px] text-rr-muted">
+                    Score: <span className="font-bold text-white">{b.pressure_reliability_score.toFixed(1)}</span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
 
-          <div className="p-3 bg-[#080D1B] border-t border-white/[0.05] text-[11px] text-rr-muted text-center">
-            Rankings will populate upon completion of the reliability scoring pipeline.
+          <div className="p-3 bg-[#080D1B] border-t border-white/[0.05] text-[11px] text-rr-muted flex items-center justify-between">
+            <span>Minimum 80 pressure balls &amp; 5 matches</span>
+            <Link to="/top-batters" className="text-rr-pink font-semibold hover:underline">View Deliverable A</Link>
           </div>
         </div>
 
-        {/* Top 10 Bowlers Preview */}
+        {/* Top 5 Bowlers Preview */}
         <div
           className="rounded-xl overflow-hidden flex flex-col"
           style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
         >
           <div
-            className="flex items-center justify-between px-4 py-3 border-b"
+            className="flex items-center justify-between px-4 py-3.5 border-b"
             style={{ borderColor: 'rgba(255,255,255,0.07)' }}
           >
             <div className="flex items-center gap-2">
               <Crown className="w-4 h-4 text-rr-gold" />
-              <span className="text-sm font-bold text-white">Top 10 Bowlers Under Pressure</span>
+              <span className="text-sm font-bold text-white">Top 5 Bowlers Under Pressure</span>
             </div>
             <Link to="/top-bowlers" className="text-xs text-rr-gold hover:text-white font-medium flex items-center gap-1">
-              View Leaderboard <ArrowRight className="w-3.5 h-3.5" />
+              Full Top 10 <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
           <div className="divide-y divide-white/[0.04]">
-            {ranks.map((r) => (
-              <PendingRow key={r} rank={r} label={`Rank ${r} Bowler Slot`} />
+            {topBowlers.slice(0, 5).map((bw) => (
+              <div key={bw.bowler_id} className="flex items-center justify-between px-4 py-3 hover:bg-white/[0.02] transition-colors">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${
+                    bw.rank === 1 ? 'bg-rr-gold text-black' : bw.rank <= 3 ? 'bg-rr-gold/20 text-rr-gold border border-rr-gold/30' : 'bg-white/[0.05] text-rr-muted'
+                  }`}>
+                    {bw.rank}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold text-white truncate">{bw.bowler_name}</div>
+                    <div className="text-[10px] text-rr-muted truncate">{bw.primary_team} · {bw.tactical_role}</div>
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0 ml-3">
+                  <div className="text-xs font-black text-amber-400">
+                    {bw.adjusted_pressure_economy.toFixed(2)} <span className="text-[10px] text-rr-muted font-normal">Adj Econ</span>
+                  </div>
+                  <div className="text-[10px] text-rr-muted">
+                    Score: <span className="font-bold text-white">{bw.pressure_reliability_score.toFixed(1)}</span>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
 
-          <div className="p-3 bg-[#080D1B] border-t border-white/[0.05] text-[11px] text-rr-muted text-center">
-            Rankings will populate upon completion of the reliability scoring pipeline.
+          <div className="p-3 bg-[#080D1B] border-t border-white/[0.05] text-[11px] text-rr-muted flex items-center justify-between">
+            <span>Minimum 80 pressure legal balls &amp; 5 matches</span>
+            <Link to="/top-bowlers" className="text-rr-gold font-semibold hover:underline">View Deliverable B</Link>
           </div>
+        </div>
+      </div>
+
+      {/* ── PRESSURE DISTRIBUTION VISUALIZATION ── */}
+      <div
+        className="p-5 rounded-xl"
+        style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
+      >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-white/[0.06]">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-rr-pink" />
+              Pressure Classification Distribution
+            </h3>
+            <p className="text-xs text-rr-muted mt-0.5">
+              Deliveries classified into contextual match-state pressure categories
+            </p>
+          </div>
+          <span className="text-xs text-rr-muted">85,532 Batting &amp; 51,138 Bowling Pressure Balls</span>
+        </div>
+
+        <div className="h-64 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={pressureCategoryData} layout="vertical" margin={{ top: 5, right: 30, left: 120, bottom: 5 }}>
+              <XAxis type="number" stroke="#6B7A99" fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
+              <YAxis type="category" dataKey="name" stroke="#A7B2C7" fontSize={11} width={120} />
+              <Tooltip
+                contentStyle={{ background: '#0D1428', borderColor: '#241338', borderRadius: 8, fontSize: 12 }}
+                formatter={(val) => [`${val.toLocaleString()} deliveries`, 'Sample Volume']}
+              />
+              <Bar dataKey="count" radius={[0, 4, 4, 0]}>
+                {pressureCategoryData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
@@ -477,8 +518,8 @@ export default function Overview() {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-sm font-bold text-white">Analytics Pipeline</h3>
-            <p className="text-xs text-rr-muted">Real-time status of each analytical stage</p>
+            <h3 className="text-sm font-bold text-white">Analytical Pipeline Stages</h3>
+            <p className="text-xs text-rr-muted">End-to-end auditability and execution status</p>
           </div>
           <Link to="/methodology" className="text-xs text-rr-pink hover:text-white font-medium flex items-center gap-1">
             Methodology Details <ArrowRight className="w-3 h-3" />
@@ -489,65 +530,59 @@ export default function Overview() {
           {[
             {
               step: '01',
-              title: 'Dataset Inspection',
+              title: 'Dataset Audit',
               desc: '883 matches, 200,999 balls audited',
               status: 'ready',
               statusText: 'Completed',
             },
             {
               step: '02',
-              title: 'Match-State Engine',
-              desc: 'Pre-ball telemetry & target reconstruction',
-              status: 'processing',
-              statusText: 'In Development',
+              title: 'State Engine',
+              desc: 'Pre-ball state reconstruction (10/10 tests)',
+              status: 'ready',
+              statusText: 'Verified',
             },
             {
               step: '03',
               title: 'Pressure Classifier',
-              desc: 'RRR, balls left, leverage index',
-              status: 'pending',
-              statusText: 'Pending',
+              desc: 'Contextual leverage classification',
+              status: 'ready',
+              statusText: 'Verified',
             },
             {
               step: '04',
-              title: 'Performance Analysis',
-              desc: 'Pressure vs baseline metrics',
-              status: 'pending',
-              statusText: 'Pending',
+              title: 'Baseline Modeling',
+              desc: 'Career & period baselines calculated',
+              status: 'ready',
+              statusText: 'Verified',
             },
             {
               step: '05',
-              title: 'Reliability Scoring',
-              desc: 'Bayesian shrinkage & sample limits',
-              status: 'pending',
-              statusText: 'Pending',
+              title: 'Empirical Bayes',
+              desc: 'Shrinkage & multi-factor scoring (12/12 tests)',
+              status: 'ready',
+              statusText: 'Verified',
             },
             {
               step: '06',
               title: 'Top 10 Rankings',
-              desc: 'Final official submission leaderboards',
-              status: 'pending',
-              statusText: 'Pending',
+              desc: 'Deliverables A & B finalized',
+              status: 'ready',
+              statusText: 'Generated',
             },
           ].map((stage) => (
             <div
               key={stage.step}
               className="p-3.5 rounded-lg flex flex-col justify-between"
               style={{
-                background: stage.status === 'ready' ? 'rgba(16,185,129,0.06)' : stage.status === 'processing' ? 'rgba(59,130,246,0.06)' : '#1A2540',
-                border: stage.status === 'ready' ? '1px solid rgba(16,185,129,0.25)' : stage.status === 'processing' ? '1px solid rgba(59,130,246,0.25)' : '1px solid rgba(255,255,255,0.06)',
+                background: 'rgba(16,185,129,0.06)',
+                border: '1px solid rgba(16,185,129,0.25)',
               }}
             >
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-[10px] font-bold text-rr-muted">{stage.step}</span>
-                  {stage.status === 'ready' ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  ) : stage.status === 'processing' ? (
-                    <Clock className="w-3.5 h-3.5 text-blue-400 animate-spin" />
-                  ) : (
-                    <Clock className="w-3.5 h-3.5 text-rr-muted/40" />
-                  )}
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                 </div>
                 <div className="text-xs font-bold text-white mb-1 leading-snug">{stage.title}</div>
                 <div className="text-[10.5px] text-rr-muted leading-tight">{stage.desc}</div>

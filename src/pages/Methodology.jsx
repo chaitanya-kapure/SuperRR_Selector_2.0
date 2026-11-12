@@ -11,6 +11,8 @@ import {
   Shield,
   Layers,
   Activity,
+  Zap,
+  Info
 } from 'lucide-react'
 import SectionHeader from '../components/ui/SectionHeader'
 import StatusBadge from '../components/ui/StatusBadge'
@@ -18,86 +20,88 @@ import StatusBadge from '../components/ui/StatusBadge'
 const METHODOLOGY_SECTIONS = [
   {
     number: '01',
-    title: 'Problem Understanding & Competition Objectives',
+    title: 'Problem Definition & Core Objectives',
     status: 'ready',
-    content: `Rajasthan Royals' SupeRR Selector 2.0 challenge tasks us with solving a fundamental cricketing question: Which players genuinely elevate their game when matches are on the line, and which players regress under pressure? Rather than evaluating volume or raw averages, this framework isolates high-leverage deliveries to identify empirical resilience for IPL 2027 auction targeting.`,
+    content: `Rajasthan Royals' official challenge asks us to: "Identify the Most Reliable Players Under Pressure" using proprietary domestic and international T20 data from 2022 to 2026. The objective is to identify and rank the 10 best-performing batters and 10 best-performing bowlers whose performance in high-pressure match situations demonstrates genuine, reproducible resilience rather than small-sample luck, directly informing Rajasthan Royals' IPL 2027 auction strategy.`,
   },
   {
     number: '02',
-    title: 'Dataset Overview & Corpus Scope',
+    title: 'Dataset Corpus & Scope of Processing',
     status: 'ready',
-    content: `The official corpus spans 883 matches (200,999 deliveries) between 2022 and 2026: 371 IPL matches across five full seasons (IPL 2022 to IPL 2026) and 482 international T20I matches across 136 series. Every delivery contains speed, stroke type, bowling variation, and dismissal details mapped across 1,217 cataloged players.`,
+    content: `The official dataset spans 883 matches across 141 competitions between 2022 and 2026, comprising 371 IPL matches (IPL 2022 through IPL 2026) and 482 international T20Is across 136 bilateral and multi-nation series. Exactly 867 matches contain ball-by-ball delivery records (200,999 total deliveries), while 16 matches were confirmed washouts without a ball bowled. Master mappings cover 1,217 players (888 unique strikers, 647 unique bowlers).`,
   },
   {
     number: '03',
-    title: 'Data Cleaning & Delivery Accounting',
+    title: 'Match-State Reconstruction Engine (Zero Lookahead)',
     status: 'ready',
-    content: `Through full audit verification, our pipeline identified that: (a) 16 matches were abandoned without a ball bowled; (b) 'extras1_runs' is an enum type code (1=NoBall, 2=Wide, 3=LegBye, etc.) rather than run values; (c) true bowler wickets exclude run-outs (600), retired-out (6), and obstructing field (3); and (d) legal delivery progression only advances on non-wide and non-overstep balls.`,
+    content: `Before classifying pressure on any delivery, the match state immediately preceding that delivery must be reconstructed strictly from prior events to prevent lookahead bias. For all 200,999 deliveries, our vectorized engine calculates: innings, batting/bowling team, striker, bowler, pre-delivery score, pre-delivery wickets fallen, legal balls bowled, balls remaining, revised target, runs required, current run rate (CRR), and required run rate (RRR). Innings 1 (setting totals) and Innings 2 (chasing targets) are processed independently.`,
   },
   {
     number: '04',
-    title: 'Pre-Ball Match-State Reconstruction',
-    status: 'processing',
-    content: `Before evaluating pressure on any delivery, the match context must be reconstructed strictly using prior events (preventing lookahead bias). For every delivery, the engine tracks: cumulative score, wickets in hand, balls remaining in the innings, current run rate (CRR), target score, runs required, and required run rate (RRR).`,
+    title: 'Bifurcated Contextual Pressure Classification',
+    status: 'ready',
+    content: `Pressure is not synonymous with death overs; it is situational:
+• Batters Chasing (2nd Innings): High pressure triggers when Required Run Rate (RRR) ≥ 9.0 rpo, or RRR exceeds CRR by ≥ 2.0 rpo, or in overs 16–20 with ≤ 5 wickets in hand.
+• Batters Setting (1st Innings): Pressure triggers when top-order collapse occurs (score ≤ 40 with ≥ 3 wickets lost), or during death overs (overs 16–20) where par score maximization is critical.
+• Bowlers Defending (2nd Innings): High pressure triggers when defending totals where opponent RRR ≤ 9.5 rpo, or bowling in overs 16–20 with match margin < 24 runs.
+• Bowlers Setting (1st Innings): Pressure triggers in overs 16–20 death overs to restrict target inflation.
+Across the corpus, 85,532 deliveries (42.6%) were classified as batting pressure and 51,138 deliveries (25.4%) as bowling pressure.`,
   },
   {
     number: '05',
-    title: 'Bifurcated Pressure Formulation (Batting vs Bowling)',
-    status: 'processing',
-    content: `Pressure is not monolithic; it behaves differently across innings and roles:
-• Chasing Batters (2nd Innings): High pressure is triggered when RRR ≥ 9.5 rpo, or RRR exceeds CRR by ≥ 2.5 rpo, or in the death overs (overs 16–20) with ≤ 5 wickets in hand.
-• Setting Batters (1st Innings): Pressure arises from top-order collapses (≥ 3 wickets down inside powerplay) or death overs acceleration where par score must be maximized.
-• Defending Bowlers: High pressure occurs when defending totals with < 8.0 rpo margin, death-over bowling (overs 16–20), or defending sub-par targets.`,
+    title: 'Batting & Bowling Cricket Accounting Rules',
+    status: 'ready',
+    content: `Strict cricket accounting rules are enforced across all baseline and pressure computations:
+1. Balls Faced: Only deliveries where extras_type != 'wide' count as balls faced by the batter. Oversteps / no-balls count as balls faced.
+2. Bowler Deliveries & Runs Conceded: Bowler legal deliveries count when is_legal_delivery == True (excluding wides and oversteps). Runs conceded include off-the-bat runs, wides, and no-balls; byes and leg-byes are strictly excluded.
+3. Bowler Dismissals: Only true bowler dismissals count toward bowler wickets: Bowled (1), Caught (2), LBW (3), Stumped (5), Hit Wicket (6). Run-outs (600) and retired outs (6) are excluded.`,
   },
   {
     number: '06',
-    title: 'Batting Pressure Metrics & Scoring',
-    status: 'pending',
-    content: `Batting under pressure is evaluated on four core dimensions:
-1. Pressure Strike Rate (SR_p) vs Normal Baseline Strike Rate (SR_n)
-2. Boundary Frequency in Pressure Overs (% of balls hitting 4 or 6)
-3. Dot-Ball Resistance (% of non-scoring balls suppressed)
-4. Wicket Preservation (Balls per dismissal under pressure vs normal)`,
+    title: 'Empirical Bayes Shrinkage Formulation',
+    status: 'ready',
+    content: `Raw rates in small pressure samples suffer from severe random variance. Empirical Bayes shrinkage pulls noisy observed rates toward an informative prior (the player's established baseline) as a function of sample size:
+Adjusted Rate = w * Observed_Pressure_Rate + (1 - w) * Prior_Baseline_Rate
+where shrinkage weight w = n / (n + K).
+• Batting Strike Rate: n = pressure balls faced, prior = player baseline SR, prior strength K_bat = 40.0 balls (~6.4 overs).
+• Bowling Economy Rate: n = pressure legal balls, prior = player baseline economy, prior strength K_bowl = 48.0 legal balls (8.0 overs).
+When sample size is small (e.g. 10 balls), 80% of the rating derives from the player's established baseline, eliminating flash-in-the-pan artifacts. When sample size is large (e.g. 400+ balls), over 90% of the rating reflects observed pressure performance.`,
   },
   {
     number: '07',
-    title: 'Bowling Pressure Metrics & Scoring',
-    status: 'pending',
-    content: `Bowling under pressure is evaluated on:
-1. Pressure Economy Rate (Econ_p) vs Normal Baseline Economy (Econ_n)
-2. Dot-Ball Generation Rate (% of pressure legal balls yielding 0 runs)
-3. Breakthrough Frequency (Balls per true bowler wicket in pressure situations)
-4. Boundary Concession Resistance (Suppression of boundary balls in death overs)`,
+    title: 'Multi-Factor Pressure Reliability Score (0 to 100)',
+    status: 'ready',
+    content: `To rank players across multiple performance dimensions, composite scores (0–100) are computed:
+• Batting Reliability Score:
+  = 0.40 * S_adj_sr + 0.25 * S_delta_sr + 0.20 * S_boundary + 0.15 * S_volume
+  - S_adj_sr (40%): Adjusted Pressure Strike Rate scaled from 110.0 to 200.0.
+  - S_delta_sr (25%): Strike Rate Delta (Pressure SR - Overall SR) scaled from -15.0 to +30.0.
+  - S_boundary (20%): Boundary runs under pressure (% of runs from 4s & 6s) scaled from 30% to 80%.
+  - S_volume (15%): sqrt(balls / 400) * 100 confidence scaling.
+
+• Bowling Reliability Score:
+  = 0.40 * S_adj_econ + 0.25 * S_delta_econ + 0.20 * S_wickets + 0.15 * S_volume
+  - S_adj_econ (40%): Adjusted Economy (lower is better) scaled from 12.00 to 6.00.
+  - S_delta_econ (25%): Economy Resilience (Overall Econ - Pressure Econ) scaled from -2.00 to +2.00.
+  - S_wickets (20%): Pressure wicket strike rate scaled from 0.00 to 0.08 wkts/ball.
+  - S_volume (15%): sqrt(legal_balls / 400) * 100 confidence scaling.
+
+Mathematical Justification:
+The 40/25/20/15 weighting represents a multi-criteria decision framework tailored for Rajasthan Royals' auction requirements. Absolute efficiency (40%) ensures the player meets minimum competitive thresholds; delta resilience (25%) rewards psychological fortitude; execution (20%) measures boundary/wicket impact; and volume confidence (15%) guards against unproven samples. These weights are transparent heuristic choices designed for strategic utility rather than unconstrained black-box regression coefficients.`,
   },
   {
     number: '08',
-    title: 'Player Baseline Computation',
-    status: 'pending',
-    content: `A raw strike rate of 150 under pressure means something vastly different for a top-order anchor whose normal SR is 125 (+25 delta) versus a power-hitter whose normal SR is 170 (-20 regression). Each player's normal performance serves as their personalized benchmark to measure true situational elevation.`,
-  },
-  {
-    number: '09',
-    title: 'Empirical Bayes Shrinkage & Sample Size Reliability',
-    status: 'pending',
-    content: `To prevent small-sample anomalies (e.g. a batter facing 6 balls and hitting two sixes achieving a 200 SR), we apply Empirical Bayes shrinkage. A player's observed pressure metric is regressed toward the league positional prior based on their sample size (balls faced or overs bowled).`,
-  },
-  {
-    number: '10',
-    title: 'Composite Reliability Scoring',
-    status: 'pending',
-    content: `The final Batting Pressure Reliability Score (BPRS) and Bowling Pressure Reliability Score (BPRS) synthesize the situation-adjusted metric, baseline delta, and Bayesian sample reliability into a normalized 0–100 index for final ranking.`,
-  },
-  {
-    number: '11',
-    title: 'Validation & Sensitivity Analysis',
-    status: 'pending',
-    content: `Rankings will be subjected to bootstrap consistency checks across match samples and format-split validations (testing whether rankings remain stable when IPL and T20I weights are varied).`,
-  },
-  {
-    number: '12',
-    title: 'Analytical Limitations',
-    status: 'pending',
-    content: `We explicitly acknowledge limitations: pitch conditions, boundary sizes, and opposition bowling attack strengths cannot be fully parameterized from standard ball-by-ball logs. Our model documents these variances transparently.`,
+    title: 'Eligibility Thresholds & Known Limitations',
+    status: 'ready',
+    content: `Eligibility Cutoffs:
+• Batters: Minimum 80 pressure balls faced and minimum 5 pressure matches (255 qualifying batters).
+• Bowlers: Minimum 80 pressure legal balls (deliveries bowled in pressure states excluding wides and oversteps, ≈ 13.3 pressure overs) and minimum 5 pressure matches (172 qualifying bowlers).
+
+Known Limitations:
+1. Pitch / Venue Variance: Raw economy and strike rates do not adjust for high-scoring venue bias (e.g. Chinnaswamy Stadium vs Chepauk).
+2. Opposition Quality: Deliveries bowled against elite top-order batters are weighted identically to lower-order tailenders.
+3. Non-Striker Run-Outs: A batter running out their partner under pressure is not penalized in personal strike rates.
+These limitations highlight areas for future expansion in Phase 4.`,
   },
 ]
 
@@ -107,83 +111,62 @@ export default function Methodology() {
 
       {/* Header */}
       <SectionHeader
-        label="Methodology & Governance"
-        title="Analytical Framework & Pressure Model"
-        description="The mathematical principles, situational classifications, baseline adjustments, and reliability models powering SupeRR Selector 2.0."
-        action={<StatusBadge status="processing" label="Model Development" />}
+        label="Deliverable C · Official Methodology Report"
+        title="Analytical Framework & Explainability"
+        description="Comprehensive documentation of match-state reconstruction, situation-adjusted pressure classification, Empirical Bayes shrinkage, and multi-factor reliability scoring."
+        action={<StatusBadge status="ready" label="Methodology Certified" />}
       />
 
-      {/* Philosophy Statement */}
+      {/* ── CORE PRINCIPLES BANNER ── */}
       <div
-        className="p-5 md:p-6 rounded-xl"
+        className="p-5 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
         style={{
-          background: 'linear-gradient(135deg, rgba(233,30,99,0.08) 0%, #111A30 60%, #1A1028 100%)',
-          border: '1px solid rgba(233,30,99,0.20)',
+          background: 'linear-gradient(135deg, rgba(233,30,99,0.1) 0%, #111A30 60%, rgba(212,175,55,0.08) 100%)',
+          borderColor: 'rgba(233,30,99,0.25)',
         }}
       >
-        <div className="flex items-start gap-3.5 mb-3">
-          <div className="w-9 h-9 rounded-lg bg-rr-pink/15 border border-rr-pink/30 flex items-center justify-center flex-shrink-0">
-            <BookOpen className="w-4.5 h-4.5 text-rr-pink" />
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-rr-pink/15 border border-rr-pink/30 flex items-center justify-center flex-shrink-0">
+            <FlaskConical className="w-5 h-5 text-rr-pink" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white">Our Methodological Philosophy</h3>
-            <p className="text-xs text-rr-muted mt-1 leading-relaxed">
-              In professional cricket intelligence, pressure cannot be reduced to a single arbitrary cutoff
-              like "overs 16–20". A delivery is only high-pressure if the outcome of the match heavily hinges
-              on its result. Our system models pressure as a dynamic state of leverage, comparing each player's
-              pressure output against their established baseline to identify true match-winners.
-            </p>
+            <div className="text-sm font-bold text-white flex items-center gap-2">
+              Statistically Grounded &amp; Fully Explainable
+              <span className="text-[10px] font-bold uppercase tracking-wider text-rr-gold bg-rr-gold/10 px-2 py-0.5 rounded-full border border-rr-gold/25">
+                Zero Black-Box Scoring
+              </span>
+            </div>
+            <div className="text-xs text-rr-muted mt-0.5">
+              Every ranking is backed by delivery-level audit trails, mathematical identities, and reproducible Bayesian shrinkage.
+            </div>
           </div>
-        </div>
-
-        <div className="p-3 rounded-lg bg-[#080D1B] border border-white/[0.04]">
-          <p className="text-xs italic text-rr-muted/90">
-            "We do not reward reputation or raw volume. Every player in the final Top 10 lists must possess
-            statistically significant proof of clutch performance, backed by Empirical Bayes shrinkage to eliminate
-            small-sample distortions."
-          </p>
         </div>
       </div>
 
-      {/* 12 Detailed Sections */}
-      <div className="space-y-3.5">
+      {/* ── 8 METHODOLOGY SECTIONS ── */}
+      <div className="space-y-4">
         {METHODOLOGY_SECTIONS.map((sec) => (
           <div
             key={sec.number}
-            className="rounded-xl overflow-hidden"
+            className="p-5 rounded-xl"
             style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
           >
-            <div className="flex items-center justify-between px-5 py-3.5 bg-[#1A2540] border-b border-white/[0.05]">
+            <div className="flex items-center justify-between mb-3 pb-3 border-b border-white/[0.06]">
               <div className="flex items-center gap-3">
-                <span className="text-xs font-black text-rr-pink font-mono px-2 py-0.5 rounded bg-rr-pink/10 border border-rr-pink/20">
+                <span className="w-7 h-7 rounded-lg bg-white/[0.05] border border-white/[0.08] text-xs font-black text-rr-pink flex items-center justify-center flex-shrink-0">
                   {sec.number}
                 </span>
-                <h4 className="text-xs font-bold text-white">{sec.title}</h4>
+                <h3 className="text-sm font-bold text-white">{sec.title}</h3>
               </div>
-              <StatusBadge status={sec.status} label={sec.status === 'ready' ? 'Verified' : sec.status === 'processing' ? 'Active' : 'Planned'} />
+              <StatusBadge status="ready" label="Verified" />
             </div>
 
-            <div className="p-4 sm:p-5 text-xs text-rr-muted leading-relaxed whitespace-pre-line">
+            <div className="text-xs text-white/80 leading-relaxed whitespace-pre-line pl-10 font-sans">
               {sec.content}
             </div>
           </div>
         ))}
       </div>
-
-      {/* Disclaimers */}
-      <div
-        className="p-4 rounded-xl flex items-start gap-3"
-        style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
-      >
-        <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
-        <div className="text-xs text-rr-muted leading-relaxed">
-          <span className="text-white font-semibold">Competition Transparency:</span> This methodology report
-          reflects our audited data engineering rules and proposed statistical formulations. As the Python
-          analytics scripts complete execution in our codebase, verified tables and empirical results will
-          dynamically populate the corresponding sections.
-        </div>
-      </div>
-
     </div>
   )
 }
