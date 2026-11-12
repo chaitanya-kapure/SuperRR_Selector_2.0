@@ -1,26 +1,20 @@
-# 🏏 SupeRR Selector 2.0
+# 🏏 SupeRR Selector 2.0 — Pressure Performance Intelligence Platform
 
-### Rajasthan Royals — IPL 2027 Auction Intelligence Platform
+### Rajasthan Royals | IPL 2027 Auction Strategy Platform
 
-> **"Discover Tomorrow's Royals."**
+> **"Discover Who Delivers When It Matters."**
 
-An intelligent, data-driven talent discovery platform built to identify the **top 10 youngest uncapped domestic players** worth backing at the IPL 2027 auction — developed for the **SupeRR Selector 2.0** competition organized by **Rajasthan Royals**.
-
----
-
-## 🎯 Objective
-
-Analyse uncapped domestic cricket talent and produce a statistically justified, evidence-backed recommendation of the **10 youngest players** who could deliver real value for Rajasthan Royals at the IPL 2027 mega auction.
-
-This is not a generic dashboard — it's a **franchise-level auction intelligence platform** combining cricket analytics, statistical reasoning, and a premium user interface.
+An advanced, data-driven cricket analytics platform built to identify the **most reliable batters and bowlers under pressure** for Rajasthan Royals' IPL 2027 auction strategy — developed for the **SupeRR Selector 2.0** official competition organized by **Rajasthan Royals**.
 
 ---
 
-## 🖥️ Screenshots
+## 🎯 Official Challenge & Deliverables
 
-| Dashboard | Sidebar & Navigation |
-|---|---|
-| Hero section with cinematic palace artwork, KPI row, analytics pipeline, Top 10 shortlist preview, and key analysis views | RR-branded sidebar with crown emblem, active pink navigation, palace silhouette, and tagline |
+**Official Challenge:** *"Build a data-driven system that measures how batters and bowlers perform in high-pressure match situations compared with their usual performance levels. Use your system to identify and rank the players who deliver most consistently when it matters."*
+
+- **Deliverable A — Top 10 Batters Under Pressure:** An ordered ranking of the 10 best-performing batters in high-pressure match situations.
+- **Deliverable B — Top 10 Bowlers Under Pressure:** An ordered ranking of the 10 best-performing bowlers defending totals, bowling death overs, and creating breakthroughs.
+- **Deliverable C — Comprehensive Methodology Report:** Mathematical pressure definition, baseline comparison, Empirical Bayes shrinkage, and evidence dossiers for all rankings.
 
 ---
 
@@ -28,73 +22,81 @@ This is not a generic dashboard — it's a **franchise-level auction intelligenc
 
 | Layer | Technology |
 |---|---|
-| **Framework** | React 18 |
+| **Frontend Framework** | React 18 |
 | **Build Tool** | Vite 6 |
-| **Styling** | Tailwind CSS 3 |
+| **Styling & Design System** | Tailwind CSS 3 |
 | **Routing** | React Router 7 |
-| **Icons** | Lucide React |
-| **Language** | JavaScript (JSX) |
-
-**Future additions** (after dataset arrives):
-- Recharts (data visualisation)
-- Python / Pandas / NumPy / Scikit-learn (analytics & ML)
-- FastAPI or Node.js (backend, if needed)
+| **Data Visualization** | Recharts |
+| **Iconography** | Lucide React |
+| **Data Science & Analytics** | Python 3.13, Pandas, NumPy |
 
 ---
 
-## 🎨 Design System
+## 🎨 Rajasthan Royals Visual Identity
 
-A premium Rajasthan Royals-inspired visual identity:
-
-| Token | Hex | Usage |
+| Token | Hex | Role |
 |---|---|---|
-| **Primary Pink** | `#E91E63` | CTAs, highlights, active states |
-| **Bright Pink** | `#FF1768` | Hover states, emphasis |
-| **Deep Navy** | `#080D1B` | Page background |
-| **Card Background** | `#111A30` | Card surfaces |
-| **Royal Purple** | `#241338` | Special panels, gradients |
-| **Royal Gold** | `#D4AF37` | Premium accents, Top 10 ranks |
-| **Muted Text** | `#A7B2C7` | Secondary text |
+| **Primary Pink** | `#E91E63` | Key highlights, brand badges, active states |
+| **Bright Pink** | `#FF1768` | Focus accents, high-leverage indicators |
+| **Deep Navy** | `#080D1B` | App base canvas |
+| **Royal Navy** | `#0B1020` | Secondary background |
+| **Card Canvas** | `#111A30` | Analytical card surfaces |
+| **Elevated Navy**| `#1A2540` | Table headers & metric pods |
+| **Royal Purple** | `#241338` | Cinematic gradients |
+| **Royal Gold**   | `#D4AF37` | Top 10 badges, champion spotlight |
+| **Muted Text**  | `#A7B2C7` | Data labels & subtitles |
 
 ---
 
-## 📂 Project Structure
+## 📂 Application Architecture
 
 ```
 src/
-├── App.jsx                          # Router — 6 routes
+├── App.jsx                          # Router — 8 dedicated competition pages
 ├── main.jsx                         # React entry point
-├── index.css                        # Design system & global styles
+├── index.css                        # RR design tokens & CSS art
+│
+├── services/
+│   └── analyticsService.js          # Clean data contracts & audit provider
 │
 ├── components/
 │   ├── layout/
 │   │   ├── Layout.jsx               # App shell (sidebar + topbar + outlet)
-│   │   ├── Sidebar.jsx              # RR-branded sidebar with palace artwork
-│   │   └── TopBar.jsx               # Page title + dataset status badge
+│   │   ├── Sidebar.jsx              # RR-branded navigation & palace silhouette
+│   │   └── TopBar.jsx               # Breadcrumbs, live status pill & user avatar
 │   └── ui/
-│       ├── EmptyState.jsx           # Reusable empty state placeholder
-│       ├── SectionHeader.jsx        # Label + heading + description
-│       └── StatusBadge.jsx          # Coloured status pill
+│       ├── EmptyState.jsx           # Standardized empty / pending state
+│       ├── SectionHeader.jsx        # Standardized page & section headings
+│       └── StatusBadge.jsx          # Live processing & validation badges
 │
 └── pages/
-    ├── Dashboard.jsx                # Hero + KPIs + pipeline + shortlist + analysis views
-    ├── PlayerDiscovery.jsx          # Search & filter interface (awaiting data)
-    ├── PlayerAnalytics.jsx          # 6 chart placeholders (awaiting data)
-    ├── AuctionIntelligence.jsx      # Evaluation framework + ranking table shell
-    ├── Shortlist.jsx                # 10-slot shortlist with selection criteria
-    └── Methodology.jsx             # 6 principles + 6-phase analytical workflow
+    ├── Overview.jsx                 # Hero, KPIs, performance previews, pipeline status
+    ├── BattingAnalytics.jsx         # Batting under pressure (SR, Boundary %, Dot %)
+    ├── BowlingAnalytics.jsx         # Bowling under pressure (Economy, Dots, Wickets)
+    ├── PlayerComparison.jsx         # Head-to-head radar & metric comparison
+    ├── Top10Batters.jsx             # Top 10 Batters leaderboard with Rank 1 spotlight
+    ├── Top10Bowlers.jsx             # Top 10 Bowlers leaderboard with Rank 1 spotlight
+    ├── Methodology.jsx              # 12-section mathematical & pressure framework
+    └── DataQuality.jsx              # Official dataset inventory & audit verification
 ```
 
 ---
 
-## 🚀 Getting Started
+## 📊 Dataset & Audit Findings
 
-### Prerequisites
+The platform is powered by the official Round 1 dataset:
+- **883 Matches** (371 IPL matches from 2022 to 2026, 482 T20Is across 136 series).
+- **200,999 Deliveries** analyzed down to ball speed, stroke type, and dismissal IDs.
+- **1,217 Players** cataloged with 100% referential integrity.
+- **Data Engineering Discoveries:**
+  - Decoupled `extras1_runs` categorical enum (1=No-ball, 2=Wide, 3=Legbyes, 4=Byes).
+  - Filtered 10,058 true bowler wickets vs 823 non-bowler dismissals.
+  - Reconciled 16 abandoned matches without ball-by-ball records.
+  - 100% scorecard verification on sample international matches.
 
-- **Node.js** ≥ 18
-- **npm** ≥ 9
+---
 
-### Install & Run
+## 🚀 Running the Project
 
 ```bash
 # Clone the repository
@@ -106,60 +108,11 @@ npm install
 
 # Start development server
 npm run dev
-# → Opens at http://localhost:5173
+# → http://localhost:5173
 
 # Production build
 npm run build
-
-# Preview production build
-npm run preview
 ```
-
----
-
-## 📋 Current Status
-
-| Item | Status |
-|---|---|
-| Frontend Foundation | ✅ Complete |
-| Premium Dashboard Redesign | ✅ Complete |
-| Navigation & Routing (6 pages) | ✅ Complete |
-| Responsive Layout | ✅ Complete |
-| Official Round 1 Dataset | ⏳ Awaiting |
-| Competition Guidelines | ⏳ Awaiting |
-| Data Cleaning & EDA | 🔒 Blocked on dataset |
-| Player Ranking Model | 🔒 Blocked on dataset |
-| Top 10 Shortlist | 🔒 Blocked on analysis |
-| Final Submission | 🔒 Last step |
-
-> **Important:** No fake player data, fabricated statistics, or invented rankings are used anywhere in this project. All analytics modules will activate only after the official dataset is received.
-
----
-
-## 🔬 Analytical Workflow (Post-Dataset)
-
-1. **Dataset Inspection** — Understand every column, type, and limitation
-2. **Data Cleaning** — Validate, normalise, handle missing values
-3. **Exploratory Analysis** — Distributions, outliers, age vs performance
-4. **Methodology Design** — Evidence-based composite scoring framework
-5. **Player Ranking** — Score and rank all eligible uncapped players
-6. **Top 10 Selection** — Identify highest-value youngest targets
-7. **Validation** — Cross-check rankings for consistency
-8. **Submission** — Package analytics, visuals, and recommendations
-
----
-
-## 🏆 Competition
-
-- **Competition:** SupeRR Selector 2.0
-- **Organizer:** Rajasthan Royals
-- **Goal:** Identify the top 10 youngest uncapped domestic players for IPL 2027 auction
-
----
-
-## 📄 License
-
-This project is built for the SupeRR Selector 2.0 competition. All rights reserved.
 
 ---
 

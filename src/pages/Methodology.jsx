@@ -1,156 +1,189 @@
 import {
-  BookOpen, CheckCircle2, AlertTriangle,
-  Lightbulb, FlaskConical, Scale, FileText,
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  AlertTriangle,
+  Lightbulb,
+  FlaskConical,
+  Scale,
+  Target,
+  Flame,
+  Shield,
+  Layers,
+  Activity,
 } from 'lucide-react'
 import SectionHeader from '../components/ui/SectionHeader'
 import StatusBadge from '../components/ui/StatusBadge'
 
-const PRINCIPLES = [
-  { icon: CheckCircle2,  color: 'pink', title: 'Evidence Over Opinion',       desc: 'Every player recommendation is backed by statistical evidence from the official dataset. We do not rely on reputation, media perception, or gut feeling.' },
-  { icon: Scale,         color: 'gold', title: 'Balanced Evaluation',          desc: 'Youth alone does not make a player valuable. We balance age, performance quality, consistency, role fit, and competition level in our evaluation model.' },
-  { icon: AlertTriangle, color: 'pink', title: 'Honest About Limitations',     desc: 'We acknowledge the limitations of domestic cricket data. Sample sizes, opposition quality, and format differences are considered in our analysis.' },
-  { icon: Lightbulb,     color: 'gold', title: 'Explainable Decisions',        desc: 'Every rank, every score, and every recommendation can be explained in plain cricket language. We use ML only when it genuinely adds value, not for show.' },
-  { icon: FlaskConical,  color: 'pink', title: 'Rigorous Data Workflow',       desc: 'We follow a structured workflow: inspect → clean → explore → model → validate → present. No shortcuts, no assumptions.' },
-  { icon: FileText,      color: 'gold', title: 'Transparent Methodology',      desc: 'Our full analytical approach will be documented and presented to the Rajasthan Royals analytics team. Nothing is hidden or unexplained.' },
-]
-
-const WORKFLOW_DETAIL = [
-  { phase: 'Phase 1 — Dataset Intake',       steps: ['Receive and verify the official Round 1 dataset','Read and understand all competition guidelines','Identify every column, data type, and unit of measurement','Document known limitations and data gaps'] },
-  { phase: 'Phase 2 — Data Engineering',      steps: ['Clean and validate all player records','Handle missing values using statistically appropriate methods','Normalise performance metrics for cross-competition comparison','Filter to eligible uncapped players only'] },
-  { phase: 'Phase 3 — Exploratory Analysis',   steps: ['Understand distributions of key performance metrics','Identify outliers and investigate their causes','Examine age versus performance relationships','Understand representation across domestic competitions'] },
-  { phase: 'Phase 4 — Evaluation Model',       steps: ['Design a composite scoring methodology based on dataset insights','Assign evidence-based weights to evaluation dimensions','Validate the model against known high-quality players as benchmarks','Apply ML techniques only if they provide a meaningful advantage'] },
-  { phase: 'Phase 5 — Ranking & Shortlisting', steps: ['Rank all eligible uncapped players using the composite model','Identify the top 10 youngest players with strong scores','Cross-validate rankings using alternative analytical perspectives','Prepare individual player rationale for each top-10 selection'] },
-  { phase: 'Phase 6 — Submission',             steps: ['Finalise the visual analytics platform','Prepare supporting documentation and methodology writeup','Package the full submission as required by competition guidelines','Review for accuracy, clarity, and presentation quality'] },
+const METHODOLOGY_SECTIONS = [
+  {
+    number: '01',
+    title: 'Problem Understanding & Competition Objectives',
+    status: 'ready',
+    content: `Rajasthan Royals' SupeRR Selector 2.0 challenge tasks us with solving a fundamental cricketing question: Which players genuinely elevate their game when matches are on the line, and which players regress under pressure? Rather than evaluating volume or raw averages, this framework isolates high-leverage deliveries to identify empirical resilience for IPL 2027 auction targeting.`,
+  },
+  {
+    number: '02',
+    title: 'Dataset Overview & Corpus Scope',
+    status: 'ready',
+    content: `The official corpus spans 883 matches (200,999 deliveries) between 2022 and 2026: 371 IPL matches across five full seasons (IPL 2022 to IPL 2026) and 482 international T20I matches across 136 series. Every delivery contains speed, stroke type, bowling variation, and dismissal details mapped across 1,217 cataloged players.`,
+  },
+  {
+    number: '03',
+    title: 'Data Cleaning & Delivery Accounting',
+    status: 'ready',
+    content: `Through full audit verification, our pipeline identified that: (a) 16 matches were abandoned without a ball bowled; (b) 'extras1_runs' is an enum type code (1=NoBall, 2=Wide, 3=LegBye, etc.) rather than run values; (c) true bowler wickets exclude run-outs (600), retired-out (6), and obstructing field (3); and (d) legal delivery progression only advances on non-wide and non-overstep balls.`,
+  },
+  {
+    number: '04',
+    title: 'Pre-Ball Match-State Reconstruction',
+    status: 'processing',
+    content: `Before evaluating pressure on any delivery, the match context must be reconstructed strictly using prior events (preventing lookahead bias). For every delivery, the engine tracks: cumulative score, wickets in hand, balls remaining in the innings, current run rate (CRR), target score, runs required, and required run rate (RRR).`,
+  },
+  {
+    number: '05',
+    title: 'Bifurcated Pressure Formulation (Batting vs Bowling)',
+    status: 'processing',
+    content: `Pressure is not monolithic; it behaves differently across innings and roles:
+• Chasing Batters (2nd Innings): High pressure is triggered when RRR ≥ 9.5 rpo, or RRR exceeds CRR by ≥ 2.5 rpo, or in the death overs (overs 16–20) with ≤ 5 wickets in hand.
+• Setting Batters (1st Innings): Pressure arises from top-order collapses (≥ 3 wickets down inside powerplay) or death overs acceleration where par score must be maximized.
+• Defending Bowlers: High pressure occurs when defending totals with < 8.0 rpo margin, death-over bowling (overs 16–20), or defending sub-par targets.`,
+  },
+  {
+    number: '06',
+    title: 'Batting Pressure Metrics & Scoring',
+    status: 'pending',
+    content: `Batting under pressure is evaluated on four core dimensions:
+1. Pressure Strike Rate (SR_p) vs Normal Baseline Strike Rate (SR_n)
+2. Boundary Frequency in Pressure Overs (% of balls hitting 4 or 6)
+3. Dot-Ball Resistance (% of non-scoring balls suppressed)
+4. Wicket Preservation (Balls per dismissal under pressure vs normal)`,
+  },
+  {
+    number: '07',
+    title: 'Bowling Pressure Metrics & Scoring',
+    status: 'pending',
+    content: `Bowling under pressure is evaluated on:
+1. Pressure Economy Rate (Econ_p) vs Normal Baseline Economy (Econ_n)
+2. Dot-Ball Generation Rate (% of pressure legal balls yielding 0 runs)
+3. Breakthrough Frequency (Balls per true bowler wicket in pressure situations)
+4. Boundary Concession Resistance (Suppression of boundary balls in death overs)`,
+  },
+  {
+    number: '08',
+    title: 'Player Baseline Computation',
+    status: 'pending',
+    content: `A raw strike rate of 150 under pressure means something vastly different for a top-order anchor whose normal SR is 125 (+25 delta) versus a power-hitter whose normal SR is 170 (-20 regression). Each player's normal performance serves as their personalized benchmark to measure true situational elevation.`,
+  },
+  {
+    number: '09',
+    title: 'Empirical Bayes Shrinkage & Sample Size Reliability',
+    status: 'pending',
+    content: `To prevent small-sample anomalies (e.g. a batter facing 6 balls and hitting two sixes achieving a 200 SR), we apply Empirical Bayes shrinkage. A player's observed pressure metric is regressed toward the league positional prior based on their sample size (balls faced or overs bowled).`,
+  },
+  {
+    number: '10',
+    title: 'Composite Reliability Scoring',
+    status: 'pending',
+    content: `The final Batting Pressure Reliability Score (BPRS) and Bowling Pressure Reliability Score (BPRS) synthesize the situation-adjusted metric, baseline delta, and Bayesian sample reliability into a normalized 0–100 index for final ranking.`,
+  },
+  {
+    number: '11',
+    title: 'Validation & Sensitivity Analysis',
+    status: 'pending',
+    content: `Rankings will be subjected to bootstrap consistency checks across match samples and format-split validations (testing whether rankings remain stable when IPL and T20I weights are varied).`,
+  },
+  {
+    number: '12',
+    title: 'Analytical Limitations',
+    status: 'pending',
+    content: `We explicitly acknowledge limitations: pitch conditions, boundary sizes, and opposition bowling attack strengths cannot be fully parameterized from standard ball-by-ball logs. Our model documents these variances transparently.`,
+  },
 ]
 
 export default function Methodology() {
   return (
-    <div className="p-4 md:p-6 animate-fade-in space-y-6" style={{ background: '#080D1B' }}>
+    <div className="p-4 md:p-6 space-y-6 animate-fade-in" style={{ background: '#080D1B' }}>
 
+      {/* Header */}
       <SectionHeader
-        label="Methodology"
-        title="Analytical Framework"
-        description="The principles, process, and design philosophy behind SupeRR Selector 2.0."
-        action={<StatusBadge status="pending" label="In Development" />}
+        label="Methodology & Governance"
+        title="Analytical Framework & Pressure Model"
+        description="The mathematical principles, situational classifications, baseline adjustments, and reliability models powering SupeRR Selector 2.0."
+        action={<StatusBadge status="processing" label="Model Development" />}
       />
 
-      {/* Philosophy */}
+      {/* Philosophy Statement */}
       <div
-        className="rounded-xl p-5 md:p-6"
-        style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
+        className="p-5 md:p-6 rounded-xl"
+        style={{
+          background: 'linear-gradient(135deg, rgba(233,30,99,0.08) 0%, #111A30 60%, #1A1028 100%)',
+          border: '1px solid rgba(233,30,99,0.20)',
+        }}
       >
-        <div className="flex items-start gap-3 mb-4">
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-            style={{ background: 'rgba(233,30,99,0.10)', border: '1px solid rgba(233,30,99,0.22)' }}
-          >
-            <BookOpen className="w-[18px] h-[18px]" style={{ color: '#E91E63' }} />
+        <div className="flex items-start gap-3.5 mb-3">
+          <div className="w-9 h-9 rounded-lg bg-rr-pink/15 border border-rr-pink/30 flex items-center justify-center flex-shrink-0">
+            <BookOpen className="w-4.5 h-4.5 text-rr-pink" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white">Our Analytical Philosophy</h3>
-            <p className="text-sm mt-1 leading-relaxed" style={{ color: '#A7B2C7' }}>
-              SupeRR Selector 2.0 is built on a single conviction: in cricket talent identification,
-              the quality of your analytical framework matters more than the complexity of your tools.
-              A statistically sound, explainable methodology beats a black-box machine learning model
-              every time — especially when presenting recommendations to a professional franchise.
+            <h3 className="text-base font-bold text-white">Our Methodological Philosophy</h3>
+            <p className="text-xs text-rr-muted mt-1 leading-relaxed">
+              In professional cricket intelligence, pressure cannot be reduced to a single arbitrary cutoff
+              like "overs 16–20". A delivery is only high-pressure if the outcome of the match heavily hinges
+              on its result. Our system models pressure as a dynamic state of leverage, comparing each player's
+              pressure output against their established baseline to identify true match-winners.
             </p>
           </div>
         </div>
-        <div
-          className="p-3 rounded-lg"
-          style={{ background: '#080D1B', border: '1px solid rgba(255,255,255,0.05)' }}
-        >
-          <p className="text-xs leading-relaxed italic" style={{ color: '#A7B2C7' }}>
-            "We don't rank players until we understand what the data actually says. Every decision
-            on this platform will be traceable back to a specific statistic, a specific dataset
-            column, and a specific analytical rationale."
+
+        <div className="p-3 rounded-lg bg-[#080D1B] border border-white/[0.04]">
+          <p className="text-xs italic text-rr-muted/90">
+            "We do not reward reputation or raw volume. Every player in the final Top 10 lists must possess
+            statistically significant proof of clutch performance, backed by Empirical Bayes shrinkage to eliminate
+            small-sample distortions."
           </p>
         </div>
       </div>
 
-      {/* Core principles */}
-      <section>
-        <SectionHeader label="Core Principles" title="What Drives Our Decisions" />
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {PRINCIPLES.map(({ icon: Icon, color, title, desc }) => {
-            const isPink = color === 'pink'
-            return (
-              <div
-                key={title}
-                className="rounded-xl p-5 transition-all duration-200 hover:border-white/[0.12]"
-                style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
-              >
-                <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center mb-3"
-                  style={{
-                    background: isPink ? 'rgba(233,30,99,0.10)' : 'rgba(212,175,55,0.10)',
-                    border: `1px solid ${isPink ? 'rgba(233,30,99,0.22)' : 'rgba(212,175,55,0.22)'}`,
-                  }}
-                >
-                  <Icon className="w-[18px] h-[18px]" style={{ color: isPink ? '#E91E63' : '#D4AF37' }} />
-                </div>
-                <h4 className="text-sm font-bold text-white mb-1.5">{title}</h4>
-                <p className="text-xs leading-relaxed" style={{ color: '#A7B2C7' }}>{desc}</p>
+      {/* 12 Detailed Sections */}
+      <div className="space-y-3.5">
+        {METHODOLOGY_SECTIONS.map((sec) => (
+          <div
+            key={sec.number}
+            className="rounded-xl overflow-hidden"
+            style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
+          >
+            <div className="flex items-center justify-between px-5 py-3.5 bg-[#1A2540] border-b border-white/[0.05]">
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-black text-rr-pink font-mono px-2 py-0.5 rounded bg-rr-pink/10 border border-rr-pink/20">
+                  {sec.number}
+                </span>
+                <h4 className="text-xs font-bold text-white">{sec.title}</h4>
               </div>
-            )
-          })}
-        </div>
-      </section>
-
-      {/* Workflow phases */}
-      <section>
-        <SectionHeader
-          label="Workflow"
-          title="Phase-by-Phase Process"
-          description="Our structured analytical pipeline — to be executed once the official dataset arrives."
-        />
-        <div className="space-y-3">
-          {WORKFLOW_DETAIL.map(({ phase, steps }, i) => (
-            <div
-              key={phase}
-              className="rounded-xl overflow-hidden"
-              style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
-            >
-              <div
-                className="flex items-center gap-3 px-5 py-3.5"
-                style={{ background: '#1A2540', borderBottom: '1px solid rgba(255,255,255,0.07)' }}
-              >
-                <div
-                  className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(233,30,99,0.12)', border: '1px solid rgba(233,30,99,0.25)' }}
-                >
-                  <span className="text-[10px] font-bold" style={{ color: '#E91E63' }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                <h4 className="text-sm font-bold text-white">{phase}</h4>
-              </div>
-              <ul className="px-5 py-4 space-y-2.5">
-                {steps.map((step) => (
-                  <li key={step} className="flex items-start gap-2.5">
-                    <div className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0" style={{ background: 'rgba(233,30,99,0.5)' }} />
-                    <span className="text-sm leading-relaxed" style={{ color: '#A7B2C7' }}>{step}</span>
-                  </li>
-                ))}
-              </ul>
+              <StatusBadge status={sec.status} label={sec.status === 'ready' ? 'Verified' : sec.status === 'processing' ? 'Active' : 'Planned'} />
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* Disclaimer */}
+            <div className="p-4 sm:p-5 text-xs text-rr-muted leading-relaxed whitespace-pre-line">
+              {sec.content}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Disclaimers */}
       <div
-        className="flex gap-3 px-4 py-4 rounded-xl"
+        className="p-4 rounded-xl flex items-start gap-3"
         style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
       >
-        <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#F59E0B' }} />
-        <p className="text-xs leading-relaxed" style={{ color: '#A7B2C7' }}>
-          <span className="text-white font-semibold">Important:</span> This methodology document will
-          be updated and refined as we receive the official dataset and competition guidelines. All
-          analytical decisions depend on the actual data available. Nothing documented here commits
-          us to a specific scoring formula — that will emerge from the data itself.
-        </p>
+        <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+        <div className="text-xs text-rr-muted leading-relaxed">
+          <span className="text-white font-semibold">Competition Transparency:</span> This methodology report
+          reflects our audited data engineering rules and proposed statistical formulations. As the Python
+          analytics scripts complete execution in our codebase, verified tables and empirical results will
+          dynamically populate the corresponding sections.
+        </div>
       </div>
+
     </div>
   )
 }
