@@ -8,4 +8,6 @@ data/raw/
 data/processed/*
 !data/processed/*.md
 !data/processed/top_10_*.csv
+!data/processed/sensitivity/
+!data/processed/sensitivity/*
 data/*.zip

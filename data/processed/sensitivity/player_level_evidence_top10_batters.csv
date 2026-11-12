@@ -1,0 +1,11 @@
+rank,striker_id,player_name,primary_team,tactical_role,pressure_reliability_score,adjusted_pressure_strike_rate,overall_strike_rate,pressure_strike_rate,strike_rate_delta,pressure_balls_faced,pressure_matches,pressure_boundary_pct,ipl_pressure_balls,t20i_pressure_balls,sample_defensibility,justification
+1,37052,Naman Dhir,Mumbai Indians,Elite Finisher / Power Accelerator,86.77,189.17,168.42,191.95,23.53,298,35,73.08,232,76,High Sample Volume,Adj SR 189.2 (Δ +23.5) across 298.0 balls in 35.0 matches
+2,6819,Yashasvi Jaiswal,Rajasthan Royals,Elite Finisher / Power Accelerator,85.82,177.81,156.36,180.23,23.87,354,46,79.94,348,22,High Sample Volume,Adj SR 177.8 (Δ +23.9) across 354.0 balls in 46.0 matches
+3,4703,Rishabh Pant,Delhi Capitals,High-Elevation Pressure Rescuer,84.59,172.77,143.06,175.32,32.26,466,40,71.73,402,92,High Sample Volume,Adj SR 172.8 (Δ +32.3) across 466.0 balls in 40.0 matches
+4,7216,Prabhsimran Singh,Punjab Kings,Elite Finisher / Power Accelerator,83.3,179.08,160.24,181.82,21.58,275,33,79.6,283,0,High Sample Volume,Adj SR 179.1 (Δ +21.6) across 275.0 balls in 33.0 matches
+5,6396,Tim David,Mumbai Indians,Dynamic Powerhitter,82.63,189.29,177.65,189.9,12.25,762,73,73.12,502,308,High Sample Volume,Adj SR 189.3 (Δ +12.2) across 762.0 balls in 73.0 matches
+6,1699,Suryakumar Yadav,Mumbai Indians,Dynamic Powerhitter,79.59,180.33,166.43,180.89,14.46,994,68,72.41,616,419,High Sample Volume,Adj SR 180.3 (Δ +14.5) across 994.0 balls in 68.0 matches
+7,443,Paul Stirling,Ireland,High-Elevation Pressure Rescuer,79.54,169.85,140.42,180.36,39.94,112,23,83.17,0,123,Moderate Sample Qualifier,Adj SR 169.8 (Δ +39.9) across 112.0 balls in 23.0 matches
+8,25669,Priyansh Arya,Punjab Kings,Dynamic Powerhitter,79.42,197.25,190.87,200.0,9.13,93,16,80.65,101,0,Moderate Sample Qualifier,Adj SR 197.2 (Δ +9.1) across 93.0 balls in 16.0 matches
+9,4007,Ryan Rickelton,Mumbai Indians,High-Elevation Pressure Rescuer,78.39,173.82,157.59,176.01,18.42,296,28,76.39,154,151,High Sample Volume,Adj SR 173.8 (Δ +18.4) across 296.0 balls in 28.0 matches
+10,47,Virat Kohli,Royal Challengers Bengaluru,High-Elevation Pressure Rescuer,77.75,168.5,145.24,170.14,24.9,566,46,66.46,442,151,High Sample Volume,Adj SR 168.5 (Δ +24.9) across 566.0 balls in 46.0 matches
