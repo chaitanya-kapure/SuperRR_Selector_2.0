@@ -1,0 +1,11 @@
+rank,striker_id,striker_name,batting_type,primary_team,ipl_experience,pressure_reliability_score,adjusted_pressure_strike_rate,overall_strike_rate,pressure_strike_rate,strike_rate_delta,pressure_runs,pressure_balls_faced,pressure_matches,pressure_boundary_pct,tactical_role,justification
+1,37052,Naman Dhir,RHB,Mumbai Indians,Yes,86.77,189.17,168.42,191.95,23.53,572.0,298.0,35.0,73.08,Elite Finisher / Power Accelerator,Adj SR 189.2 (Δ +23.5) across 298.0 balls in 35.0 matches
+2,6819,Yashasvi Jaiswal,LHB,Rajasthan Royals,Yes,85.82,177.81,156.36,180.23,23.87,638.0,354.0,46.0,79.94,Elite Finisher / Power Accelerator,Adj SR 177.8 (Δ +23.9) across 354.0 balls in 46.0 matches
+3,4703,Rishabh Pant,LHB,Delhi Capitals,Yes,84.59,172.77,143.06,175.32,32.26,817.0,466.0,40.0,71.73,High-Elevation Pressure Rescuer,Adj SR 172.8 (Δ +32.3) across 466.0 balls in 40.0 matches
+4,7216,Prabhsimran Singh,RHB,Punjab Kings,Yes,83.3,179.08,160.24,181.82,21.58,500.0,275.0,33.0,79.6,Elite Finisher / Power Accelerator,Adj SR 179.1 (Δ +21.6) across 275.0 balls in 33.0 matches
+5,6396,Tim David,RHB,Mumbai Indians,Yes,82.63,189.29,177.65,189.9,12.25,1447.0,762.0,73.0,73.12,Dynamic Powerhitter,Adj SR 189.3 (Δ +12.2) across 762.0 balls in 73.0 matches
+6,1699,Suryakumar Yadav,RHB,Mumbai Indians,Yes,79.59,180.33,166.43,180.89,14.46,1798.0,994.0,68.0,72.41,Dynamic Powerhitter,Adj SR 180.3 (Δ +14.5) across 994.0 balls in 68.0 matches
+7,443,Paul Stirling,RHB,Ireland,T20I Only,79.54,169.85,140.42,180.36,39.94,202.0,112.0,23.0,83.17,High-Elevation Pressure Rescuer,Adj SR 169.8 (Δ +39.9) across 112.0 balls in 23.0 matches
+8,25669,Priyansh Arya,LHB,Punjab Kings,Yes,79.42,197.25,190.87,200.0,9.13,186.0,93.0,16.0,80.65,Dynamic Powerhitter,Adj SR 197.2 (Δ +9.1) across 93.0 balls in 16.0 matches
+9,4007,Ryan Rickelton,LHB,Mumbai Indians,Yes,78.39,173.82,157.59,176.01,18.42,521.0,296.0,28.0,76.39,High-Elevation Pressure Rescuer,Adj SR 173.8 (Δ +18.4) across 296.0 balls in 28.0 matches
+10,47,Virat Kohli,RHB,Royal Challengers Bengaluru,Yes,77.75,168.5,145.24,170.14,24.9,963.0,566.0,46.0,66.46,High-Elevation Pressure Rescuer,Adj SR 168.5 (Δ +24.9) across 566.0 balls in 46.0 matches
