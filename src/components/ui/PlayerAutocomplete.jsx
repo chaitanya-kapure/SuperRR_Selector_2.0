@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { Search, X, Check, Lock, ChevronDown, User, AlertCircle } from 'lucide-react'
+import PlayerAvatar from './PlayerAvatar'
 
 /**
  * Highlights matching query substring in text
@@ -280,6 +281,17 @@ export default function PlayerAutocomplete({
                       >
                         #{stat?.rank || '—'}
                       </span>
+
+                      {/* Player Thumbnail Avatar */}
+                      <PlayerAvatar
+                        playerId={p.player_id}
+                        playerName={p.player_name}
+                        teamName={p.primary_team}
+                        role={roleMode === 'batters' ? 'batter' : 'bowler'}
+                        size="sm"
+                        ringColor={isSelected ? (isPink ? 'pink' : 'gold') : 'none'}
+                        className="shrink-0"
+                      />
 
                       {/* Name & Subtitle */}
                       <div className="min-w-0 truncate">

@@ -27,6 +27,7 @@ import {
 } from 'recharts'
 import SectionHeader from '../components/ui/SectionHeader'
 import StatusBadge from '../components/ui/StatusBadge'
+import PlayerAvatar from '../components/ui/PlayerAvatar'
 import analyticsService from '../services/analyticsService'
 
 export default function Top10Bowlers() {
@@ -119,14 +120,22 @@ export default function Top10Bowlers() {
         >
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0"
-                style={{
-                  background: 'linear-gradient(135deg, #D4AF37 0%, #997B20 100%)',
-                  boxShadow: '0 0 25px rgba(212,175,55,0.4)',
-                }}
-              >
-                <Lock className="w-9 h-9 text-black" />
+              <div className="relative flex-shrink-0">
+                <PlayerAvatar
+                  playerId={rank1.bowler_id}
+                  playerName={rank1.bowler_name}
+                  teamName={rank1.primary_team}
+                  role="bowler"
+                  size="xl"
+                  ringColor="gold"
+                  showGlow={true}
+                />
+                <div
+                  className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full flex items-center justify-center border-2 border-[#111A30]"
+                  style={{ background: 'linear-gradient(135deg, #D4AF37 0%, #997B20 100%)' }}
+                >
+                  <Lock className="w-4 h-4 text-black" />
+                </div>
               </div>
 
               <div>
@@ -304,8 +313,20 @@ export default function Top10Bowlers() {
                       </span>
                     </td>
                     <td className="py-3.5 px-4">
-                      <div className="font-bold text-white text-xs">{bw.bowler_name}</div>
-                      <div className="text-[10px] text-rr-muted">{bw.bowling_type}</div>
+                      <div className="flex items-center gap-2.5">
+                        <PlayerAvatar
+                          playerId={bw.bowler_id}
+                          playerName={bw.bowler_name}
+                          teamName={bw.primary_team}
+                          role="bowler"
+                          size="sm"
+                          ringColor={isRank1 ? 'gold' : isTop3 ? 'gold' : 'none'}
+                        />
+                        <div className="min-w-0">
+                          <div className="font-bold text-white text-xs truncate">{bw.bowler_name}</div>
+                          <div className="text-[10px] text-rr-muted">{bw.bowling_type}</div>
+                        </div>
+                      </div>
                     </td>
                     <td className="py-3.5 px-4 text-xs text-white/80">{bw.primary_team}</td>
                     <td className="py-3.5 px-4 text-center font-black text-emerald-400 text-xs">

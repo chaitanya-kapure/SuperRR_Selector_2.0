@@ -29,6 +29,7 @@ import {
 import SectionHeader from '../components/ui/SectionHeader'
 import StatusBadge from '../components/ui/StatusBadge'
 import PlayerAutocomplete from '../components/ui/PlayerAutocomplete'
+import PlayerAvatar from '../components/ui/PlayerAvatar'
 import analyticsService from '../services/analyticsService'
 
 export default function PlayerComparison() {
@@ -173,18 +174,40 @@ export default function PlayerComparison() {
             />
 
             {p1 ? (
-              <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
-                <div>
-                  <div className="text-lg font-black text-white">{p1.player_name}</div>
-                  <div className="text-xs text-rr-muted">{p1.primary_team} · {p1.batting_type || p1.bowling_type || p1.primary_role}</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-[10px] text-rr-muted uppercase font-bold">Reliability</div>
-                  <div className="text-2xl font-black text-rr-pink">{stat1?.reliability_score.toFixed(1)}</div>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-4">
+                <PlayerAvatar
+                  playerId={p1.player_id}
+                  playerName={p1.player_name}
+                  teamName={p1.primary_team}
+                  role={roleMode === 'batters' ? 'batter' : 'bowler'}
+                  size="xl"
+                  ringColor="pink"
+                  showGlow={true}
+                  className="shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="text-lg font-black text-white truncate">{p1.player_name}</div>
+                      <div className="text-xs text-rr-muted truncate">{p1.primary_team}</div>
+                      <div className="text-[11px] text-rr-muted-dim mt-0.5">{p1.batting_type || p1.bowling_type || p1.primary_role}</div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-[10px] text-rr-muted uppercase font-bold tracking-wider">Reliability</div>
+                      <div className="text-2xl font-black text-rr-pink">{stat1?.reliability_score.toFixed(1)}</div>
+                    </div>
+                  </div>
+                  {stat1?.tactical_role && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rr-pink/15 text-rr-pink border border-rr-pink/25 truncate">
+                        {stat1.tactical_role}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
-              <div className="pt-2 text-center text-xs text-rr-muted italic">
+              <div className="pt-4 pb-2 text-center text-xs text-rr-muted italic">
                 No player selected for Player A. Type in the box above to search.
               </div>
             )}
@@ -217,18 +240,40 @@ export default function PlayerComparison() {
             />
 
             {p2 ? (
-              <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
-                <div>
-                  <div className="text-lg font-black text-white">{p2.player_name}</div>
-                  <div className="text-xs text-rr-muted">{p2.primary_team} · {p2.batting_type || p2.bowling_type || p2.primary_role}</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-[10px] text-rr-muted uppercase font-bold">Reliability</div>
-                  <div className="text-2xl font-black text-rr-gold">{stat2?.reliability_score.toFixed(1)}</div>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-4">
+                <PlayerAvatar
+                  playerId={p2.player_id}
+                  playerName={p2.player_name}
+                  teamName={p2.primary_team}
+                  role={roleMode === 'batters' ? 'batter' : 'bowler'}
+                  size="xl"
+                  ringColor="gold"
+                  showGlow={true}
+                  className="shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="text-lg font-black text-white truncate">{p2.player_name}</div>
+                      <div className="text-xs text-rr-muted truncate">{p2.primary_team}</div>
+                      <div className="text-[11px] text-rr-muted-dim mt-0.5">{p2.batting_type || p2.bowling_type || p2.primary_role}</div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-[10px] text-rr-muted uppercase font-bold tracking-wider">Reliability</div>
+                      <div className="text-2xl font-black text-rr-gold">{stat2?.reliability_score.toFixed(1)}</div>
+                    </div>
+                  </div>
+                  {stat2?.tactical_role && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rr-gold/15 text-rr-gold border border-rr-gold/25 truncate">
+                        {stat2.tactical_role}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
-              <div className="pt-2 text-center text-xs text-rr-muted italic">
+              <div className="pt-4 pb-2 text-center text-xs text-rr-muted italic">
                 No player selected for Player B. Type in the box above to search.
               </div>
             )}
@@ -259,9 +304,33 @@ export default function PlayerComparison() {
             <table className="w-full text-left text-xs">
               <thead>
                 <tr className="border-b border-white/[0.06] text-rr-muted font-bold text-[10px] uppercase tracking-wider">
-                  <th className="py-2.5 px-4">{p1.player_name} (A)</th>
+                  <th className="py-2.5 px-4">
+                    <div className="flex items-center gap-2">
+                      <PlayerAvatar
+                        playerId={p1.player_id}
+                        playerName={p1.player_name}
+                        teamName={p1.primary_team}
+                        role={roleMode === 'batters' ? 'batter' : 'bowler'}
+                        size="xs"
+                        ringColor="pink"
+                      />
+                      <span>{p1.player_name} (A)</span>
+                    </div>
+                  </th>
                   <th className="py-2.5 px-4 text-center">Analytics Dimension</th>
-                  <th className="py-2.5 px-4 text-right">{p2.player_name} (B)</th>
+                  <th className="py-2.5 px-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <span>{p2.player_name} (B)</span>
+                      <PlayerAvatar
+                        playerId={p2.player_id}
+                        playerName={p2.player_name}
+                        teamName={p2.primary_team}
+                        role={roleMode === 'batters' ? 'batter' : 'bowler'}
+                        size="xs"
+                        ringColor="gold"
+                      />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/[0.04]">

@@ -28,6 +28,7 @@ import {
 } from 'recharts'
 import SectionHeader from '../components/ui/SectionHeader'
 import StatusBadge from '../components/ui/StatusBadge'
+import PlayerAvatar from '../components/ui/PlayerAvatar'
 import analyticsService from '../services/analyticsService'
 
 export default function BowlingAnalytics() {
@@ -326,8 +327,19 @@ export default function BowlingAnalytics() {
                       </span>
                     </td>
                     <td className="py-3 px-4">
-                      <div className="font-bold text-white">{bw.bowler_name}</div>
-                      <div className="text-[10px] text-rr-muted">{bw.bowling_type}</div>
+                      <div className="flex items-center gap-2">
+                        <PlayerAvatar
+                          playerId={bw.bowler_id}
+                          playerName={bw.bowler_name}
+                          teamName={bw.primary_team}
+                          role="bowler"
+                          size="xs"
+                        />
+                        <div className="min-w-0">
+                          <div className="font-bold text-white truncate">{bw.bowler_name}</div>
+                          <div className="text-[10px] text-rr-muted">{bw.bowling_type}</div>
+                        </div>
+                      </div>
                     </td>
                     <td className="py-3 px-3 text-white/80 text-xs truncate max-w-[120px]">{bw.primary_team}</td>
                     <td className="py-3 px-3 text-center font-black text-emerald-400 text-xs">
