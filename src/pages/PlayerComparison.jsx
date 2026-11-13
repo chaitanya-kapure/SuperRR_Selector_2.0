@@ -28,6 +28,7 @@ import {
 } from 'recharts'
 import SectionHeader from '../components/ui/SectionHeader'
 import StatusBadge from '../components/ui/StatusBadge'
+import PlayerAutocomplete from '../components/ui/PlayerAutocomplete'
 import analyticsService from '../services/analyticsService'
 
 export default function PlayerComparison() {
@@ -44,7 +45,6 @@ export default function PlayerComparison() {
         setProfiles(res.data)
         // Default player selections
         const batList = res.data.filter((p) => p.batting)
-        const bowlList = res.data.filter((p) => p.bowling)
         if (batList.length >= 2) {
           setPlayer1Id(String(batList[0].player_id))
           setPlayer2Id(String(batList[1].player_id))
@@ -88,7 +88,7 @@ export default function PlayerComparison() {
 
   // Comparison metrics for BarChart
   const comparisonChartData = useMemo(() => {
-    if (!stat1 || !stat2) return []
+    if (!stat1 || !stat2 || !p1 || !p2) return []
     if (roleMode === 'batters') {
       return [
         { metric: 'Adj SR', [p1.player_name]: stat1.adjusted_sr, [p2.player_name]: stat2.adjusted_sr },
@@ -115,7 +115,7 @@ export default function PlayerComparison() {
       <SectionHeader
         label="Head-to-Head Analytics · Rajasthan Royals Auction Strategy"
         title="Player Comparison"
-        description="Select any two qualified players to compare their Empirical Bayes pressure resilience, baseline divergence, situational efficiency, and tactical auction fit."
+        description="Select any two qualified players using Google-style search to compare their Empirical Bayes pressure resilience, baseline divergence, situational efficiency, and tactical auction fit."
         action={<StatusBadge status="ready" label="360 Indexed Profiles" />}
       />
 
@@ -130,7 +130,7 @@ export default function PlayerComparison() {
           }`}
         >
           <Flame className="w-4 h-4" />
-          Compare Batters
+          Compare Batters ({profiles.filter((p) => p.batting).length})
         </button>
         <button
           onClick={() => handleRoleSwitch('bowlers')}
@@ -141,11 +141,11 @@ export default function PlayerComparison() {
           }`}
         >
           <Shield className="w-4 h-4" />
-          Compare Bowlers
+          Compare Bowlers ({profiles.filter((p) => p.bowling).length})
         </button>
       </div>
 
-      {/* ── SELECTOR CARDS ── */}
+      {/* ── SEARCH & SELECTOR CARDS ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Player 1 Selector */}
         <div
@@ -153,35 +153,39 @@ export default function PlayerComparison() {
           style={{ background: '#111A30', borderColor: 'rgba(233,30,99,0.35)' }}
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-rr-pink bg-rr-pink/15 px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-rr-pink bg-rr-pink/15 px-2 py-0.5 rounded border border-rr-pink/20">
               Player A
             </span>
             <span className="text-xs text-rr-muted">Rank #{stat1?.rank || '—'}</span>
           </div>
 
           <div className="space-y-3">
-            <select
-              value={player1Id}
-              onChange={(e) => setPlayer1Id(e.target.value)}
-              className="w-full bg-[#080D1B] border border-white/[0.15] rounded-lg px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-rr-pink"
-            >
-              {eligiblePlayers.map((p) => (
-                <option key={p.player_id} value={p.player_id}>
-                  #{roleMode === 'batters' ? p.batting?.rank : p.bowling?.rank} {p.player_name} ({p.primary_team})
-                </option>
-              ))}
-            </select>
+            <PlayerAutocomplete
+              selectedPlayerId={player1Id}
+              onSelectPlayer={(id) => setPlayer1Id(id)}
+              players={eligiblePlayers}
+              roleMode={roleMode}
+              label="Player A"
+              themeColor="pink"
+              disabledPlayerId={player2Id}
+              disabledLabel="Selected in Player B"
+              placeholder={`Search ${roleMode === 'batters' ? 'batter' : 'bowler'} (e.g. Naman, Virat, Yashasvi)...`}
+            />
 
-            {p1 && (
-              <div className="flex items-center justify-between pt-2">
+            {p1 ? (
+              <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
                 <div>
                   <div className="text-lg font-black text-white">{p1.player_name}</div>
-                  <div className="text-xs text-rr-muted">{p1.primary_team} · {p1.batting_type || p1.bowling_type}</div>
+                  <div className="text-xs text-rr-muted">{p1.primary_team} · {p1.batting_type || p1.bowling_type || p1.primary_role}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] text-rr-muted uppercase font-bold">Reliability</div>
                   <div className="text-2xl font-black text-rr-pink">{stat1?.reliability_score.toFixed(1)}</div>
                 </div>
+              </div>
+            ) : (
+              <div className="pt-2 text-center text-xs text-rr-muted italic">
+                No player selected for Player A. Type in the box above to search.
               </div>
             )}
           </div>
@@ -193,35 +197,39 @@ export default function PlayerComparison() {
           style={{ background: '#111A30', borderColor: 'rgba(212,175,55,0.35)' }}
         >
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-rr-gold bg-rr-gold/15 px-2 py-0.5 rounded">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-rr-gold bg-rr-gold/15 px-2 py-0.5 rounded border border-rr-gold/20">
               Player B
             </span>
             <span className="text-xs text-rr-muted">Rank #{stat2?.rank || '—'}</span>
           </div>
 
           <div className="space-y-3">
-            <select
-              value={player2Id}
-              onChange={(e) => setPlayer2Id(e.target.value)}
-              className="w-full bg-[#080D1B] border border-white/[0.15] rounded-lg px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-rr-gold"
-            >
-              {eligiblePlayers.map((p) => (
-                <option key={p.player_id} value={p.player_id}>
-                  #{roleMode === 'batters' ? p.batting?.rank : p.bowling?.rank} {p.player_name} ({p.primary_team})
-                </option>
-              ))}
-            </select>
+            <PlayerAutocomplete
+              selectedPlayerId={player2Id}
+              onSelectPlayer={(id) => setPlayer2Id(id)}
+              players={eligiblePlayers}
+              roleMode={roleMode}
+              label="Player B"
+              themeColor="gold"
+              disabledPlayerId={player1Id}
+              disabledLabel="Selected in Player A"
+              placeholder={`Search ${roleMode === 'batters' ? 'batter' : 'bowler'} (e.g. Yashasvi, Tim, Haris)...`}
+            />
 
-            {p2 && (
-              <div className="flex items-center justify-between pt-2">
+            {p2 ? (
+              <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
                 <div>
                   <div className="text-lg font-black text-white">{p2.player_name}</div>
-                  <div className="text-xs text-rr-muted">{p2.primary_team} · {p2.batting_type || p2.bowling_type}</div>
+                  <div className="text-xs text-rr-muted">{p2.primary_team} · {p2.batting_type || p2.bowling_type || p2.primary_role}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-[10px] text-rr-muted uppercase font-bold">Reliability</div>
                   <div className="text-2xl font-black text-rr-gold">{stat2?.reliability_score.toFixed(1)}</div>
                 </div>
+              </div>
+            ) : (
+              <div className="pt-2 text-center text-xs text-rr-muted italic">
+                No player selected for Player B. Type in the box above to search.
               </div>
             )}
           </div>
@@ -229,7 +237,7 @@ export default function PlayerComparison() {
       </div>
 
       {/* ── METRIC COMPARISON MATRIX ── */}
-      {stat1 && stat2 && (
+      {stat1 && stat2 && p1 && p2 ? (
         <div
           className="p-5 rounded-xl"
           style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
@@ -351,10 +359,21 @@ export default function PlayerComparison() {
             </table>
           </div>
         </div>
+      ) : (
+        <div
+          className="p-8 rounded-xl border border-white/[0.08] text-center space-y-3"
+          style={{ background: '#111A30' }}
+        >
+          <GitCompare className="w-8 h-8 mx-auto text-rr-pink opacity-70" />
+          <div className="text-sm font-bold text-white">Select Both Players to Compare</div>
+          <p className="text-xs text-rr-muted max-w-md mx-auto">
+            Use the Google-style search boxes above to select Player A and Player B from the {roleMode === 'batters' ? '255 qualified batters' : '172 qualified bowlers'} across domestic and international T20s.
+          </p>
+        </div>
       )}
 
       {/* ── VISUAL HEAD-TO-HEAD BARS ── */}
-      {stat1 && stat2 && (
+      {stat1 && stat2 && p1 && p2 && (
         <div
           className="p-5 rounded-xl"
           style={{ background: '#111A30', border: '1px solid rgba(255,255,255,0.07)' }}
